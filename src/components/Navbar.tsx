@@ -46,7 +46,7 @@ const Navbar = () => {
   }
 
   return (
-    <div className="sticky top-0 z-[100] border-b border-gray-900/10 bg-white bg-opacity-80 backdrop-blur-md dark:border-gray-500/30 dark:bg-gray-900">
+    <div className="sticky top-0 z-[100] border-b border-gray-900/10 bg-white bg-opacity-80 backdrop-blur-md dark:border-gray-500/30 dark:bg-gray-900 flex justify-between" >
       <Toaster />
 
       <div className="mx-auto flex w-full items-center justify-between space-x-4 px-4 py-1">
