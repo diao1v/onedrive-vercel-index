@@ -23,7 +23,6 @@ export default function Home() {
             <Breadcrumb />
             <SwitchLayout />
           </nav>
-          <Logo />
           <FileListing />
         </div>
       </main>
