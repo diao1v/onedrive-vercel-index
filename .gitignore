@@ -30,6 +30,9 @@ yarn-error.log*
 .env.test.local
 .env.production.local
 
+# Temporary folders/files
+/temp
+
 # vercel
 .vercel
 
