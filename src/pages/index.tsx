@@ -7,6 +7,7 @@ import FileListing from '../components/FileListing'
 import Footer from '../components/Footer'
 import Breadcrumb from '../components/Breadcrumb'
 import SwitchLayout from '../components/SwitchLayout'
+import Logo from '../components/Logo'
 
 export default function Home() {
   return (
@@ -22,6 +23,7 @@ export default function Home() {
             <Breadcrumb />
             <SwitchLayout />
           </nav>
+          <Logo />
           <FileListing />
         </div>
       </main>
