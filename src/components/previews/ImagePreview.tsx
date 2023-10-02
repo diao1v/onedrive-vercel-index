@@ -23,18 +23,12 @@ const ImagePreview: FC<{ file: OdFileObject }> = ({ file }) => {
     <>
       <PreviewContainer>
         {/* eslint-disable-next-line @next/next/no-img-element */}
-        <Image
-          src={`/api/raw/?path=${asPath}${hashedToken ? `&odpt=${hashedToken}` : ''}`}
-          alt={file.name}
-          width={width}
-          height={height}
-        />
         <img
           className="mx-auto"
           src={`/api/raw/?path=${asPath}${hashedToken ? `&odpt=${hashedToken}` : ''}`}
           alt={file.name}
-          width={width}
-          height={height}
+          width={800}
+          height={600}
         />
       </PreviewContainer>
       <DownloadBtnContainer>
