@@ -147,6 +147,8 @@ export const Downloading: FC<{ title: string; style: string }> = ({ title, style
 }
 
 const FileListing: FC<{ query?: ParsedUrlQuery }> = ({ query }) => {
+  const isDev = process.env.NEXT_PUBLIC_IS_TEST
+
   const [selected, setSelected] = useState<{ [key: string]: boolean }>({})
   const [totalSelected, setTotalSelected] = useState<0 | 1 | 2>(0)
   const [totalGenerating, setTotalGenerating] = useState<boolean>(false)
@@ -164,8 +166,14 @@ const FileListing: FC<{ query?: ParsedUrlQuery }> = ({ query }) => {
 
   const { data, error, size, setSize } = useProtectedSWRInfinite(path)
 
+  if (isDev) {
+
+    // To=Do: update this to develop locally
+  }
+
   if (error) {
     // If error includes 403 which means the user has not completed initial setup, redirect to OAuth page
+    console.log('err happened', error)
     if (error.status === 403) {
       router.push('/onedrive-vercel-index-oauth/step-1')
       return <div />
@@ -186,6 +194,8 @@ const FileListing: FC<{ query?: ParsedUrlQuery }> = ({ query }) => {
   }
 
   const responses: any[] = data ? [].concat(...data) : []
+
+  console.log('responses', responses)
 
   const isLoadingInitialData = !data && !error
   const isLoadingMore = isLoadingInitialData || (size > 0 && data && typeof data[size - 1] === 'undefined')
