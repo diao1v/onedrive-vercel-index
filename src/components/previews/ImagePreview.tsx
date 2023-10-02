@@ -13,7 +13,8 @@ const ImagePreview: FC<{ file: OdFileObject }> = ({ file }) => {
   const { asPath } = useRouter()
   const hashedToken = getStoredToken(asPath)
 
-  const isLandscape = file?.image?.width! > file?.image?.height!
+  // Calculate whether the image is landscape or portrait
+  const isLandscape = file.image?.width! > file.image?.height!
 
   // Determine the dimensions based on the orientation
   const width = isLandscape ? 800 : undefined // Set width to 800 for landscape images
@@ -23,11 +24,12 @@ const ImagePreview: FC<{ file: OdFileObject }> = ({ file }) => {
     <>
       <PreviewContainer>
         {/* eslint-disable-next-line @next/next/no-img-element */}
-        <img
-          className="mx-auto"
+        <Image
           src={`/api/raw/?path=${asPath}${hashedToken ? `&odpt=${hashedToken}` : ''}`}
           alt={file.name}
-          height={600}
+          width={width}
+          height={height}
+          layout="responsive" // Make sure the image is responsive
         />
       </PreviewContainer>
       <DownloadBtnContainer>
