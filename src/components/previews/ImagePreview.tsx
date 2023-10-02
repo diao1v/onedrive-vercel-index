@@ -27,7 +27,6 @@ const ImagePreview: FC<{ file: OdFileObject }> = ({ file }) => {
           className="mx-auto"
           src={`/api/raw/?path=${asPath}${hashedToken ? `&odpt=${hashedToken}` : ''}`}
           alt={file.name}
-          width={800}
           height={600}
         />
       </PreviewContainer>
