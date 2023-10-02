@@ -1,6 +1,6 @@
 import type { OdFileObject } from '../../types'
 
-import { FC } from 'react'
+import { FC, useEffect, useState } from 'react'
 import { useRouter } from 'next/router'
 
 import { PreviewContainer, DownloadBtnContainer } from './Containers'
@@ -11,6 +11,34 @@ const ImagePreview: FC<{ file: OdFileObject }> = ({ file }) => {
   const { asPath } = useRouter()
   const hashedToken = getStoredToken(asPath)
 
+  // State variables to store the maximum allowed dimensions
+  const [maxWidth, setMaxWidth] = useState(window.innerWidth)
+  const [maxHeight, setMaxHeight] = useState(window.innerHeight)
+
+  // Update the maximum dimensions when the window is resized
+  useEffect(() => {
+    const handleResize = () => {
+      setMaxWidth(window.innerWidth)
+      setMaxHeight(window.innerHeight)
+    }
+
+    window.addEventListener('resize', handleResize)
+
+    // Clean up the event listener when the component unmounts
+    return () => {
+      window.removeEventListener('resize', handleResize)
+    }
+  }, [])
+
+  // Calculate the actual dimensions of the image
+  const actualWidth = file.image?.width || 0
+  const actualHeight = file.image?.height || 0
+
+  // Calculate the dimensions to fit within the maximum allowed dimensions
+  const scaleFactor = Math.min(maxWidth / actualWidth, maxHeight / actualHeight)
+  const scaledWidth = actualWidth * scaleFactor
+  const scaledHeight = actualHeight * scaleFactor
+
   return (
     <>
       <PreviewContainer>
@@ -19,8 +47,8 @@ const ImagePreview: FC<{ file: OdFileObject }> = ({ file }) => {
           className="mx-auto"
           src={`/api/raw/?path=${asPath}${hashedToken ? `&odpt=${hashedToken}` : ''}`}
           alt={file.name}
-          width={file.image?.width}
-          height={file.image?.height}
+          width={scaledWidth}
+          height={scaledHeight}
         />
       </PreviewContainer>
       <DownloadBtnContainer>
