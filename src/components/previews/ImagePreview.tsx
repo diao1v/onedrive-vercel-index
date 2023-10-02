@@ -29,6 +29,13 @@ const ImagePreview: FC<{ file: OdFileObject }> = ({ file }) => {
           width={width}
           height={height}
         />
+        <img
+          className="mx-auto"
+          src={`/api/raw/?path=${asPath}${hashedToken ? `&odpt=${hashedToken}` : ''}`}
+          alt={file.name}
+          width={width}
+          height={height}
+        />
       </PreviewContainer>
       <DownloadBtnContainer>
         <DownloadButtonGroup />
