@@ -122,7 +122,7 @@ const FolderListLayout = ({
             <FileListItem fileContent={c} />
           </Link>
 
-          {c.folder ? (
+          {/* {c.folder ? (
             <div className="hidden p-1.5 text-gray-700 dark:text-gray-400 md:flex">
               <span
                 title={t('Copy folder permalink')}
@@ -171,8 +171,8 @@ const FolderListLayout = ({
                 <FontAwesomeIcon icon={['far', 'arrow-alt-circle-down']} />
               </a>
             </div>
-          )}
-          <div className="hidden p-1.5 text-gray-700 dark:text-gray-400 md:flex">
+          )} */}
+          {/* <div className="hidden p-1.5 text-gray-700 dark:text-gray-400 md:flex">
             {!c.folder && !(c.name === '.password') && (
               <Checkbox
                 checked={selected[c.id] ? 2 : 0}
@@ -180,7 +180,7 @@ const FolderListLayout = ({
                 title={t('Select file')}
               />
             )}
-          </div>
+          </div> */}
         </div>
       ))}
     </div>
