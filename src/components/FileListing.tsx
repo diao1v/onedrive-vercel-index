@@ -402,49 +402,49 @@ const FileListing: FC<{ query?: ParsedUrlQuery }> = ({ query }) => {
     )
   }
 
-  if ('file' in responses[0] && responses.length === 1) {
-    const file = responses[0].file as OdFileObject
-    const previewType = getPreviewType(getExtension(file.name), { video: Boolean(file.video) })
+  // if ('file' in responses[0] && responses.length === 1) {
+  //   const file = responses[0].file as OdFileObject
+  //   const previewType = getPreviewType(getExtension(file.name), { video: Boolean(file.video) })
 
-    if (previewType) {
-      switch (previewType) {
-        case preview.image:
-          return <ImagePreview file={file} />
+  //   if (previewType) {
+  //     switch (previewType) {
+  //       case preview.image:
+  //         return <ImagePreview file={file} />
 
-        case preview.text:
-          return <TextPreview file={file} />
+  //       case preview.text:
+  //         return <TextPreview file={file} />
 
-        case preview.code:
-          return <CodePreview file={file} />
+  //       case preview.code:
+  //         return <CodePreview file={file} />
 
-        case preview.markdown:
-          return <MarkdownPreview file={file} path={path} />
+  //       case preview.markdown:
+  //         return <MarkdownPreview file={file} path={path} />
 
-        case preview.video:
-          return <VideoPreview file={file} />
+  //       case preview.video:
+  //         return <VideoPreview file={file} />
 
-        case preview.audio:
-          return <AudioPreview file={file} />
+  //       case preview.audio:
+  //         return <AudioPreview file={file} />
 
-        case preview.pdf:
-          return <PDFPreview file={file} />
+  //       case preview.pdf:
+  //         return <PDFPreview file={file} />
 
-        case preview.office:
-          return <OfficePreview file={file} />
+  //       case preview.office:
+  //         return <OfficePreview file={file} />
 
-        case preview.epub:
-          return <EPUBPreview file={file} />
+  //       case preview.epub:
+  //         return <EPUBPreview file={file} />
 
-        case preview.url:
-          return <URLPreview file={file} />
+  //       case preview.url:
+  //         return <URLPreview file={file} />
 
-        default:
-          return <DefaultPreview file={file} />
-      }
-    } else {
-      return <DefaultPreview file={file} />
-    }
-  }
+  //       default:
+  //         return <DefaultPreview file={file} />
+  //     }
+  //   } else {
+  //     return <DefaultPreview file={file} />
+  //   }
+  // }
 
   return (
     <PreviewContainer>
