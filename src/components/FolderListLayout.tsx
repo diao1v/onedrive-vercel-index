@@ -121,66 +121,71 @@ const FolderListLayout = ({
           >
             <FileListItem fileContent={c} />
           </Link>
-
-          {/* {c.folder ? (
-            <div className="hidden p-1.5 text-gray-700 dark:text-gray-400 md:flex">
-              <span
-                title={t('Copy folder permalink')}
-                className="cursor-pointer rounded px-1.5 py-1 hover:bg-gray-300 dark:hover:bg-gray-600"
-                onClick={() => {
-                  clipboard.copy(`${getBaseUrl()}${`${path === '/' ? '' : path}/${encodeURIComponent(c.name)}`}`)
-                  toast(t('Copied folder permalink.'), { icon: '👌' })
-                }}
-              >
-                <FontAwesomeIcon icon={['far', 'copy']} />
-              </span>
-              {folderGenerating[c.id] ? (
-                <Downloading title={t('Downloading folder, refresh page to cancel')} style="px-1.5 py-1" />
+          {disableDownload ? null : (
+            <>
+              {c.folder ? (
+                <div className="hidden p-1.5 text-gray-700 dark:text-gray-400 md:flex">
+                  <span
+                    title={t('Copy folder permalink')}
+                    className="cursor-pointer rounded px-1.5 py-1 hover:bg-gray-300 dark:hover:bg-gray-600"
+                    onClick={() => {
+                      clipboard.copy(`${getBaseUrl()}${`${path === '/' ? '' : path}/${encodeURIComponent(c.name)}`}`)
+                      toast(t('Copied folder permalink.'), { icon: '👌' })
+                    }}
+                  >
+                    <FontAwesomeIcon icon={['far', 'copy']} />
+                  </span>
+                  {folderGenerating[c.id] ? (
+                    <Downloading title={t('Downloading folder, refresh page to cancel')} style="px-1.5 py-1" />
+                  ) : (
+                    <span
+                      title={t('Download folder')}
+                      className="cursor-pointer rounded px-1.5 py-1 hover:bg-gray-300 dark:hover:bg-gray-600"
+                      onClick={() => {
+                        const p = `${path === '/' ? '' : path}/${encodeURIComponent(c.name)}`
+                        handleFolderDownload(p, c.id, c.name)()
+                      }}
+                    >
+                      <FontAwesomeIcon icon={['far', 'arrow-alt-circle-down']} />
+                    </span>
+                  )}
+                </div>
               ) : (
-                <span
-                  title={t('Download folder')}
-                  className="cursor-pointer rounded px-1.5 py-1 hover:bg-gray-300 dark:hover:bg-gray-600"
-                  onClick={() => {
-                    const p = `${path === '/' ? '' : path}/${encodeURIComponent(c.name)}`
-                    handleFolderDownload(p, c.id, c.name)()
-                  }}
-                >
-                  <FontAwesomeIcon icon={['far', 'arrow-alt-circle-down']} />
-                </span>
+                <div className="hidden p-1.5 text-gray-700 dark:text-gray-400 md:flex">
+                  <span
+                    title={t('Copy raw file permalink')}
+                    className="cursor-pointer rounded px-1.5 py-1 hover:bg-gray-300 dark:hover:bg-gray-600"
+                    onClick={() => {
+                      clipboard.copy(
+                        `${getBaseUrl()}/api/raw/?path=${getItemPath(c.name)}${
+                          hashedToken ? `&odpt=${hashedToken}` : ''
+                        }`
+                      )
+                      toast.success(t('Copied raw file permalink.'))
+                    }}
+                  >
+                    <FontAwesomeIcon icon={['far', 'copy']} />
+                  </span>
+                  <a
+                    title={t('Download file')}
+                    className="cursor-pointer rounded px-1.5 py-1 hover:bg-gray-300 dark:hover:bg-gray-600"
+                    href={`/api/raw/?path=${getItemPath(c.name)}${hashedToken ? `&odpt=${hashedToken}` : ''}`}
+                  >
+                    <FontAwesomeIcon icon={['far', 'arrow-alt-circle-down']} />
+                  </a>
+                </div>
               )}
-            </div>
-          ) : (
-            <div className="hidden p-1.5 text-gray-700 dark:text-gray-400 md:flex">
-              <span
-                title={t('Copy raw file permalink')}
-                className="cursor-pointer rounded px-1.5 py-1 hover:bg-gray-300 dark:hover:bg-gray-600"
-                onClick={() => {
-                  clipboard.copy(
-                    `${getBaseUrl()}/api/raw/?path=${getItemPath(c.name)}${hashedToken ? `&odpt=${hashedToken}` : ''}`
-                  )
-                  toast.success(t('Copied raw file permalink.'))
-                }}
-              >
-                <FontAwesomeIcon icon={['far', 'copy']} />
-              </span>
-              <a
-                title={t('Download file')}
-                className="cursor-pointer rounded px-1.5 py-1 hover:bg-gray-300 dark:hover:bg-gray-600"
-                href={`/api/raw/?path=${getItemPath(c.name)}${hashedToken ? `&odpt=${hashedToken}` : ''}`}
-              >
-                <FontAwesomeIcon icon={['far', 'arrow-alt-circle-down']} />
-              </a>
-            </div>
-          )} */}
-          {/* <div className="hidden p-1.5 text-gray-700 dark:text-gray-400 md:flex">
-            {!c.folder && !(c.name === '.password') && (
-              <Checkbox
-                checked={selected[c.id] ? 2 : 0}
-                onChange={() => toggleItemSelected(c.id)}
-                title={t('Select file')}
-              />
-            )}
-          </div> */}
+              <div className="hidden p-1.5 text-gray-700 dark:text-gray-400 md:flex">
+                {!c.folder && !(c.name === '.password') && (
+                  <Checkbox
+                    checked={selected[c.id] ? 2 : 0}
+                    onChange={() => toggleItemSelected(c.id)}
+                    title={t('Select file')}
+                  />
+                )}
+              </div>
+            </>
+          )}
         </div>
       ))}
     </div>
