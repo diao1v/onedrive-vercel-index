@@ -99,10 +99,6 @@ export const Checkbox: FC<{
 }> = ({ checked, onChange, title, indeterminate }) => {
   const ref = useRef<HTMLInputElement>(null)
 
-  const {
-    featureFlags: { disableDownload },
-  } = useFeatureFlags()
-
   useEffect(() => {
     if (ref.current) {
       ref.current.checked = Boolean(checked)
@@ -120,10 +116,6 @@ export const Checkbox: FC<{
         ref.current.click()
       }
     }
-  }
-
-  if (disableDownload) {
-    return null
   }
 
   return (
@@ -169,6 +161,9 @@ const FileListing: FC<{ query?: ParsedUrlQuery }> = ({ query }) => {
   const router = useRouter()
   const hashedToken = getStoredToken(router.asPath)
   const [layout, _] = useLocalStorage('preferredLayout', layouts[0])
+  const {
+    featureFlags: { disableDownload },
+  } = useFeatureFlags()
 
   const { t } = useTranslation()
 
@@ -354,6 +349,7 @@ const FileListing: FC<{ query?: ParsedUrlQuery }> = ({ query }) => {
       folderGenerating,
       handleSelectedPermalink,
       handleFolderDownload,
+      disableDownload,
     }
 
     return (

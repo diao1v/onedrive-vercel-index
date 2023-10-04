@@ -67,6 +67,7 @@ const FolderGridLayout = ({
   handleSelectedPermalink,
   handleFolderDownload,
   toast,
+  disableDownload,
 }) => {
   const clipboard = useClipboard()
   const hashedToken = getStoredToken(path)
@@ -81,23 +82,27 @@ const FolderGridLayout = ({
       <div className="flex items-center border-b border-gray-900/10 px-3 text-xs font-bold uppercase tracking-widest text-gray-600 dark:border-gray-500/30 dark:text-gray-400">
         <div className="flex-1">{t('{{count}} item(s)', { count: folderChildren.length })}</div>
         <div className="flex p-1.5 text-gray-700 dark:text-gray-400">
-          <Checkbox
-            checked={totalSelected}
-            onChange={toggleTotalSelected}
-            indeterminate={true}
-            title={t('Select all files')}
-          />
-          <button
-            title={t('Copy selected files permalink')}
-            className="cursor-pointer rounded p-1.5 hover:bg-gray-300 disabled:cursor-not-allowed disabled:text-gray-400 disabled:hover:bg-white dark:hover:bg-gray-600 disabled:dark:text-gray-600 disabled:hover:dark:bg-gray-900"
-            disabled={totalSelected === 0}
-            onClick={() => {
-              clipboard.copy(handleSelectedPermalink(getBaseUrl()))
-              toast.success(t('Copied selected files permalink.'))
-            }}
-          >
-            <FontAwesomeIcon icon={['far', 'copy']} size="lg" />
-          </button>
+          {disableDownload ? null : (
+            <>
+              <Checkbox
+                checked={totalSelected}
+                onChange={toggleTotalSelected}
+                indeterminate={true}
+                title={t('Select all files')}
+              />
+              <button
+                title={t('Copy selected files permalink')}
+                className="cursor-pointer rounded p-1.5 hover:bg-gray-300 disabled:cursor-not-allowed disabled:text-gray-400 disabled:hover:bg-white dark:hover:bg-gray-600 disabled:dark:text-gray-600 disabled:hover:dark:bg-gray-900"
+                disabled={totalSelected === 0}
+                onClick={() => {
+                  clipboard.copy(handleSelectedPermalink(getBaseUrl()))
+                  toast.success(t('Copied selected files permalink.'))
+                }}
+              >
+                <FontAwesomeIcon icon={['far', 'copy']} size="lg" />
+              </button>
+            </>
+          )}
           {totalGenerating ? (
             <Downloading title={t('Downloading selected files, refresh page to cancel')} style="p-1.5" />
           ) : (
@@ -119,7 +124,7 @@ const FolderGridLayout = ({
             key={c.id}
             className="group relative overflow-hidden rounded transition-all duration-100 hover:bg-gray-100 dark:hover:bg-gray-850"
           >
-            <div className="absolute top-0 right-0 z-10 m-1 rounded bg-white/50 py-0.5 opacity-0 transition-all duration-100 group-hover:opacity-100 dark:bg-gray-900/50">
+            <div className="absolute right-0 top-0 z-10 m-1 rounded bg-white/50 py-0.5 opacity-0 transition-all duration-100 group-hover:opacity-100 dark:bg-gray-900/50">
               {c.folder ? (
                 <div>
                   <span
@@ -176,7 +181,7 @@ const FolderGridLayout = ({
             <div
               className={`${
                 selected[c.id] ? 'opacity-100' : 'opacity-0'
-              } absolute top-0 left-0 z-10 m-1 rounded bg-white/50 py-0.5 group-hover:opacity-100 dark:bg-gray-900/50`}
+              } absolute left-0 top-0 z-10 m-1 rounded bg-white/50 py-0.5 group-hover:opacity-100 dark:bg-gray-900/50`}
             >
               {!c.folder && !(c.name === '.password') && (
                 <Checkbox
