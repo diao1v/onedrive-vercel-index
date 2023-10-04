@@ -126,6 +126,7 @@ library.add(
 function MyApp({ Component, pageProps }: AppProps) {
   const initialFlags = {
     showGalleryView: process.env.NEXT_PUBLIC_GALLERY_VIEW === 'true',
+    disableDownload: process.env.NEXT_PUBLIC_DISABLE_DOWNLOAD === 'true',
   }
   return (
     <>

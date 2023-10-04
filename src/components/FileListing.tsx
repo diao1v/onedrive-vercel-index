@@ -40,6 +40,7 @@ import { PreviewContainer } from './previews/Containers'
 import FolderListLayout from './FolderListLayout'
 import FolderGridLayout from './FolderGridLayout'
 
+import { useFeatureFlags } from '../hooks'
 
 // Disabling SSR for some previews
 const EPUBPreview = dynamic(() => import('./previews/EPUBPreview'), {
@@ -98,6 +99,10 @@ export const Checkbox: FC<{
 }> = ({ checked, onChange, title, indeterminate }) => {
   const ref = useRef<HTMLInputElement>(null)
 
+  const {
+    featureFlags: { disableDownload },
+  } = useFeatureFlags()
+
   useEffect(() => {
     if (ref.current) {
       ref.current.checked = Boolean(checked)
@@ -115,6 +120,10 @@ export const Checkbox: FC<{
         ref.current.click()
       }
     }
+  }
+
+  if (disableDownload) {
+    return null
   }
 
   return (
