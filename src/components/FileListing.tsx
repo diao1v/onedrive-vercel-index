@@ -40,6 +40,7 @@ import { PreviewContainer } from './previews/Containers'
 import FolderListLayout from './FolderListLayout'
 import FolderGridLayout from './FolderGridLayout'
 
+
 // Disabling SSR for some previews
 const EPUBPreview = dynamic(() => import('./previews/EPUBPreview'), {
   ssr: false,
@@ -147,7 +148,7 @@ export const Downloading: FC<{ title: string; style: string }> = ({ title, style
 }
 
 const FileListing: FC<{ query?: ParsedUrlQuery }> = ({ query }) => {
-  const isDev = process.env.NEXT_PUBLIC_IS_TEST
+  const isDev = process.env.NEXT_PUBLIC_DEV === 'true'
 
   const [selected, setSelected] = useState<{ [key: string]: boolean }>({})
   const [totalSelected, setTotalSelected] = useState<0 | 1 | 2>(0)
@@ -167,8 +168,7 @@ const FileListing: FC<{ query?: ParsedUrlQuery }> = ({ query }) => {
   const { data, error, size, setSize } = useProtectedSWRInfinite(path)
 
   if (isDev) {
-
-    // To=Do: update this to develop locally
+    //
   }
 
   if (error) {
@@ -194,8 +194,6 @@ const FileListing: FC<{ query?: ParsedUrlQuery }> = ({ query }) => {
   }
 
   const responses: any[] = data ? [].concat(...data) : []
-
-  console.log('responses', responses)
 
   const isLoadingInitialData = !data && !error
   const isLoadingMore = isLoadingInitialData || (size > 0 && data && typeof data[size - 1] === 'undefined')

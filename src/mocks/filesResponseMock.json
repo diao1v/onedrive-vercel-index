@@ -1,0 +1,64 @@
+[
+  {
+    "folder": {
+      "@odata.context": "https://graph.microsoft.com/v1.0/$metadata#users('evon.diao%40gmail.com')/drive/root/children",
+      "@odata.count": 3,
+      "value": [
+        {
+          "name": "peter-vanosdall-uZVtAixV8c8.jpg",
+          "size": 2698248,
+          "id": "71B8396291D8DF93!1495",
+          "lastModifiedDateTime": "2023-10-02T10:11:11.833Z",
+          "file": {
+            "mimeType": "image/jpeg",
+            "hashes": {
+              "quickXorHash": "1XNS5W4hjzw3WmckDpalhcV//d0=",
+              "sha1Hash": "23DFD70BD696679C7D273A11183786DE6FD763A6",
+              "sha256Hash": "04EA457E83624E51088A0FC46E8E098C730F6DA15CDAED8C109FFD5BE3E9E693"
+            }
+          },
+          "image": {
+            "height": 3000,
+            "width": 4500
+          }
+        },
+        {
+          "name": "preview3.jpg",
+          "size": 888072,
+          "id": "71B8396291D8DF93!1497",
+          "lastModifiedDateTime": "2023-10-02T10:11:17.923Z",
+          "file": {
+            "mimeType": "image/jpeg",
+            "hashes": {
+              "quickXorHash": "1mCIuhoIMEpaWpkA14HftmHiinc=",
+              "sha1Hash": "04254BC492FB66661CF7934FF602F8196DEEA199",
+              "sha256Hash": "C0F6599C761DC50ED47742D1DAD8C0B465551D35332A8CD53E70012C36210703"
+            }
+          },
+          "image": {
+            "height": 1792,
+            "width": 2560
+          }
+        },
+        {
+          "name": "vern-ooi-6AqJcHHb36M-unsplash.jpg",
+          "size": 3123292,
+          "id": "71B8396291D8DF93!1496",
+          "lastModifiedDateTime": "2023-10-02T10:11:12.103Z",
+          "file": {
+            "mimeType": "image/jpeg",
+            "hashes": {
+              "quickXorHash": "EPhDkAoFP3b1THO+rY6sbwbfrzw=",
+              "sha1Hash": "5BE67E9817BEEFA39A47FA23FFF9A1D26DF11C35",
+              "sha256Hash": "F1A2CD5E85D9181D4299161CD8D3B231A2C848EB394ED3BD54CD3763041B37A4"
+            }
+          },
+          "image": {
+            "height": 4032,
+            "width": 3024
+          }
+        }
+      ]
+    }
+  }
+]
