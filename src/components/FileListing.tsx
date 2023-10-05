@@ -169,7 +169,14 @@ const FileListing: FC<{ query?: ParsedUrlQuery }> = ({ query }) => {
 
   const path = queryToPath(query)
 
+  console.log('path', path)
+
+
   const { data, error, size, setSize } = useProtectedSWRInfinite(path)
+  console.log('data', data)
+  console.log('error', error)
+  console.log('size', size)
+  console.log('setSize', setSize)
 
   if (isDev) {
     //
