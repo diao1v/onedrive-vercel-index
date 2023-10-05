@@ -5,6 +5,10 @@
 /.pnp
 .pnp.js
 
+# env
+/.env.local
+/.env
+
 # testing
 /coverage
 
@@ -77,3 +81,6 @@ Temporary Items
 
 # Built Visual Studio Code Extensions
 *.vsix
+
+# local development files
+local-development
