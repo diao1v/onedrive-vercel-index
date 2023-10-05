@@ -124,13 +124,9 @@ library.add(
 )
 
 function MyApp({ Component, pageProps }: AppProps) {
-  const initialFlags = {
-    showGalleryView: process.env.NEXT_PUBLIC_GALLERY_VIEW === 'true',
-    disableDownload: process.env.NEXT_PUBLIC_DISABLE_DOWNLOAD === 'true',
-  }
   return (
     <>
-      <FeatureFlagProvider initialFlags={initialFlags}>
+      <FeatureFlagProvider>
         <NextNProgress height={1} color="rgb(156, 163, 175, 0.9)" options={{ showSpinner: false }} />
         <Component {...pageProps} />
         <Analytics />

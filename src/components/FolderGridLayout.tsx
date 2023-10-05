@@ -67,7 +67,7 @@ const FolderGridLayout = ({
   handleSelectedPermalink,
   handleFolderDownload,
   toast,
-  disableDownload,
+  flagDisableDownload,
 }) => {
   const clipboard = useClipboard()
   const hashedToken = getStoredToken(path)
@@ -82,7 +82,7 @@ const FolderGridLayout = ({
       <div className="flex items-center border-b border-gray-900/10 px-3 text-xs font-bold uppercase tracking-widest text-gray-600 dark:border-gray-500/30 dark:text-gray-400">
         <div className="flex-1 p-1.5">{t('{{count}} item(s)', { count: folderChildren.length })}</div>
         <div className="flex p-1.5 text-gray-700 dark:text-gray-400">
-          {disableDownload ? null : (
+          {flagDisableDownload ? null : (
             <>
               <Checkbox
                 checked={totalSelected}
@@ -124,7 +124,7 @@ const FolderGridLayout = ({
             key={c.id}
             className="group relative overflow-hidden rounded transition-all duration-100 hover:bg-gray-100 dark:hover:bg-gray-850"
           >
-            {disableDownload ? null : (
+            {flagDisableDownload ? null : (
               <>
                 <div className="absolute right-0 top-0 z-10 m-1 rounded bg-white/50 py-0.5 opacity-0 transition-all duration-100 group-hover:opacity-100 dark:bg-gray-900/50">
                   {c.folder ? (

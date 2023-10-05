@@ -45,7 +45,7 @@ const FolderListLayout = ({
   handleSelectedPermalink,
   handleFolderDownload,
   toast,
-  disableDownload,
+  flagDisableDownload,
 }) => {
   const clipboard = useClipboard()
   const hashedToken = getStoredToken(path)
@@ -67,7 +67,7 @@ const FolderListLayout = ({
         <div className="hidden text-xs font-bold uppercase tracking-widest text-gray-600 dark:text-gray-300 md:block">
           {t('Size')}
         </div>
-        {disableDownload ? null : (
+        {flagDisableDownload ? null : (
           <>
             <div className="hidden text-xs font-bold uppercase tracking-widest text-gray-600 dark:text-gray-300 md:block">
               {t('Actions')}
@@ -121,7 +121,7 @@ const FolderListLayout = ({
           >
             <FileListItem fileContent={c} />
           </Link>
-          {disableDownload ? null : (
+          {flagDisableDownload ? null : (
             <>
               {c.folder ? (
                 <div className="hidden p-1.5 text-gray-700 dark:text-gray-400 md:flex">
