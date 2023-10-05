@@ -162,7 +162,7 @@ const FileListing: FC<{ query?: ParsedUrlQuery }> = ({ query }) => {
   const hashedToken = getStoredToken(router.asPath)
   const [layout, _] = useLocalStorage('preferredLayout', layouts[0])
   const {
-    featureFlags: { flagDisableDownload: flagDisableDownload },
+    featureFlags: { flagDisableDownload: flagDisableDownload,flagGalleryView },
   } = useFeatureFlags()
 
   const { t } = useTranslation()
@@ -402,7 +402,7 @@ const FileListing: FC<{ query?: ParsedUrlQuery }> = ({ query }) => {
     )
   }
 
-  if (!flagDisableDownload) {
+  if (!flagGalleryView) {
     if ('file' in responses[0] && responses.length === 1) {
       const file = responses[0].file as OdFileObject
       const previewType = getPreviewType(getExtension(file.name), { video: Boolean(file.video) })

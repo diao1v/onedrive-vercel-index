@@ -24,7 +24,6 @@ const ImagePreview: FC<{ file: OdFileObject }> = ({ file }) => {
   return (
     <>
       <PreviewContainer>
-        {/* eslint-disable-next-line @next/next/no-img-element */}
         <Image
           src={`/api/raw/?path=${asPath}${hashedToken ? `&odpt=${hashedToken}` : ''}`}
           alt={file.name}
