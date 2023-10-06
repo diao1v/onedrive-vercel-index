@@ -15,6 +15,7 @@ import { DownloadBtnContainer, PreviewContainer } from './Containers'
 
 const CodePreview: FC<{ file: any }> = ({ file }) => {
   const { asPath } = useRouter()
+  console.log('asPath: ',asPath)
   const { response: content, error, validating } = useFileContent(`/api/raw/?path=${asPath}`, asPath)
 
   const theme = useSystemTheme('dark')

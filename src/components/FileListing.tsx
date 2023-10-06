@@ -56,6 +56,8 @@ const EPUBPreview = dynamic(() => import('./previews/EPUBPreview'), {
 const queryToPath = (query?: ParsedUrlQuery) => {
   if (query) {
     const { path } = query
+    console.log('path in queryToPath: ', path)
+    console.log('typeof path === string: ', typeof path === 'string')
     if (!path) return '/'
     if (typeof path === 'string') return `/${encodeURIComponent(path)}`
     return `/${path.map(p => encodeURIComponent(p)).join('/')}`
@@ -168,6 +170,8 @@ const FileListing: FC<{ query?: ParsedUrlQuery }> = ({ query }) => {
   const { t } = useTranslation()
 
   const path = queryToPath(query)
+
+  console.log('path: ', path)
 
   const { data, error, size, setSize } = useProtectedSWRInfinite(path)
 
