@@ -162,7 +162,7 @@ const FileListing: FC<{ query?: ParsedUrlQuery }> = ({ query }) => {
   const hashedToken = getStoredToken(router.asPath)
   const [layout, _] = useLocalStorage('preferredLayout', layouts[0])
   const {
-    featureFlags: { flagDisableDownload: flagDisableDownload,flagGalleryView },
+    featureFlags: { flagDisableDownload: flagDisableDownload, flagGalleryView },
   } = useFeatureFlags()
 
   const { t } = useTranslation()
@@ -204,6 +204,8 @@ const FileListing: FC<{ query?: ParsedUrlQuery }> = ({ query }) => {
   const isEmpty = data?.[0]?.length === 0
   const isReachingEnd = isEmpty || (data && typeof data[data.length - 1]?.next === 'undefined')
   const onlyOnePage = data && typeof data[0].next === 'undefined'
+
+  console.log('responses[0]: ', responses[0])
 
   if ('folder' in responses[0]) {
     // Expand list of API returns into flattened file data
