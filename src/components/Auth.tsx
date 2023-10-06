@@ -6,7 +6,7 @@ import { FC, useState } from 'react'
 import { useTranslation } from 'next-i18next'
 
 import { matchProtectedRoute } from '../utils/protectedRouteHandler'
-import useLocalStorage from '../utils/useLocalStorage'
+import useLocalStorage from '../hooks/useLocalStorage'
 
 const Auth: FC<{ redirect: string }> = ({ redirect }) => {
   const authTokenPath = matchProtectedRoute(redirect)

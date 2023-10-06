@@ -9,7 +9,7 @@ import dynamic from 'next/dynamic'
 import { useRouter } from 'next/router'
 import { useTranslation } from 'next-i18next'
 
-import useLocalStorage from '../utils/useLocalStorage'
+import useLocalStorage from '../hooks/useLocalStorage'
 import { getPreviewType, preview } from '../utils/getPreviewType'
 import { useProtectedSWRInfinite } from '../utils/fetchWithSWR'
 import { getExtension, getRawExtension, getFileIcon } from '../utils/getFileIcon'
@@ -213,6 +213,12 @@ const FileListing: FC<{ query?: ParsedUrlQuery }> = ({ query }) => {
 
     // Find README.md file to render
     const readmeFile = folderChildren.find(c => c.name.toLowerCase() === 'readme.md')
+
+    // Find Setting.json file to read settings
+    const settingFile = folderChildren.find(c => c.name.toLowerCase() === 'settings.json')
+
+    // Get settings
+    
 
     // Filtered file list helper
     const getFiles = () => folderChildren.filter(c => !c.folder && c.name !== '.password')
