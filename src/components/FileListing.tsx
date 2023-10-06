@@ -9,9 +9,10 @@ import dynamic from 'next/dynamic'
 import { useRouter } from 'next/router'
 import { useTranslation } from 'next-i18next'
 
-import useLocalStorage from '../utils/useLocalStorage'
+import useLocalStorage from '../hooks/useLocalStorage'
 import { getPreviewType, preview } from '../utils/getPreviewType'
 import { useProtectedSWRInfinite } from '../utils/fetchWithSWR'
+import useFileContent from '../utils/fetchOnMount'
 import { getExtension, getRawExtension, getFileIcon } from '../utils/getFileIcon'
 import { getStoredToken } from '../utils/protectedRouteHandler'
 import {
@@ -163,7 +164,7 @@ const FileListing: FC<{ query?: ParsedUrlQuery }> = ({ query }) => {
   const router = useRouter()
   const hashedToken = getStoredToken(router.asPath)
   const [layout, _] = useLocalStorage('preferredLayout', layouts[0])
-  const {
+  let {
     featureFlags: { flagDisableDownload: flagDisableDownload, flagGalleryView },
   } = useFeatureFlags()
 
@@ -174,6 +175,23 @@ const FileListing: FC<{ query?: ParsedUrlQuery }> = ({ query }) => {
   console.log('path: ', path)
 
   const { data, error, size, setSize } = useProtectedSWRInfinite(path)
+
+  console.log('path: ', path)
+  const folderSettingsPath = `${path}/setting.json`
+  const { response: settingsResponse, error: settingsError } = useFileContent(
+    `/api/raw/?path=${folderSettingsPath}`,
+    folderSettingsPath
+  )
+  console.log('settingsResponse1: ', settingsResponse)
+  console.log('settingsError1: ', settingsError)
+
+  if (!settingsError && settingsResponse) {
+    console.log('settingsResponse2: ', settingsResponse)
+    console.log('settingsError: ', settingsError)
+    const folderSettings = JSON.parse(settingsResponse)
+    flagDisableDownload = folderSettings.disableDownload
+    flagGalleryView = folderSettings.galleryView
+  }
 
   if (isDev) {
     //
@@ -216,7 +234,12 @@ const FileListing: FC<{ query?: ParsedUrlQuery }> = ({ query }) => {
     const folderChildren = [].concat(...responses.map(r => r.folder.value)) as OdFolderObject['value']
 
     // Find README.md file to render
-    const readmeFile = folderChildren.find(c => c.name.toLowerCase() === 'readme.md')
+    const hasReadmeFile = folderChildren.find(c => c.name.toLowerCase() === 'readme.md')
+
+    // Find Setting.json file to read settings
+    const hasSettingFile = folderChildren.find(c => c.name.toLowerCase() === 'settings.json')
+
+    // Get settings
 
     // Filtered file list helper
     const getFiles = () => folderChildren.filter(c => !c.folder && c.name !== '.password')
@@ -399,9 +422,9 @@ const FileListing: FC<{ query?: ParsedUrlQuery }> = ({ query }) => {
           </div>
         )}
 
-        {readmeFile && (
+        {hasReadmeFile && (
           <div className="mt-4">
-            <MarkdownPreview file={readmeFile} path={path} standalone={false} />
+            <MarkdownPreview file={hasReadmeFile} path={path} standalone={false} />
           </div>
         )}
       </>
