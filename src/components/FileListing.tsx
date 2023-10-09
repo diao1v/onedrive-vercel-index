@@ -40,7 +40,8 @@ import { PreviewContainer } from './previews/Containers'
 import FolderListLayout from './FolderListLayout'
 import FolderGridLayout from './FolderGridLayout'
 
-import { useFeatureFlags } from '../hooks'
+import {featureFlags} from '../utils'
+
 
 // Disabling SSR for some previews
 const EPUBPreview = dynamic(() => import('./previews/EPUBPreview'), {
@@ -161,9 +162,11 @@ const FileListing: FC<{ query?: ParsedUrlQuery }> = ({ query }) => {
   const router = useRouter()
   const hashedToken = getStoredToken(router.asPath)
   const [layout, _] = useLocalStorage('preferredLayout', layouts[0])
-  const {
-    featureFlags: { flagDisableDownload: flagDisableDownload,flagGalleryView },
-  } = useFeatureFlags()
+
+  const { FEATURE_FLAGS: {
+    flagDisableDownload,
+    flagGalleryView,
+  }}  = featureFlags
 
   const { t } = useTranslation()
 
