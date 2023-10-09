@@ -40,7 +40,9 @@ import { PreviewContainer } from './previews/Containers'
 import FolderListLayout from './FolderListLayout'
 import FolderGridLayout from './FolderGridLayout'
 
-import {featureFlags} from '../utils'
+import { featureFlags } from '../utils'
+import useFileContent from '../utils/fetchOnMount'
+
 
 
 // Disabling SSR for some previews
@@ -171,9 +173,13 @@ const FileListing: FC<{ query?: ParsedUrlQuery }> = ({ query }) => {
   const { t } = useTranslation()
 
   const path = queryToPath(query)
-  console.log('path in FileListing: ', path)
 
   const { data, error, size, setSize } = useProtectedSWRInfinite(path)
+
+  const settingFilePath = `${path}/settings.json`
+  const { response: folderSettings } = useFileContent(`/api/raw/?path=${settingFilePath}`, settingFilePath)
+  console.info('folderSettings in FileListing: ', folderSettings)
+
 
   if (isDev) {
     //
