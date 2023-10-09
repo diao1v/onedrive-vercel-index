@@ -5,6 +5,10 @@
 /.pnp
 .pnp.js
 
+# env
+/.env.local
+/.env
+
 # testing
 /coverage
 
@@ -29,6 +33,12 @@ yarn-error.log*
 .env.development.local
 .env.test.local
 .env.production.local
+
+# Temporary folders/files
+/temp
+
+# folder password files
+.password
 
 # vercel
 .vercel
@@ -71,3 +81,6 @@ Temporary Items
 
 # Built Visual Studio Code Extensions
 *.vsix
+
+# local development files
+local-development

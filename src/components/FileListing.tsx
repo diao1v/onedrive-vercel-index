@@ -40,6 +40,8 @@ import { PreviewContainer } from './previews/Containers'
 import FolderListLayout from './FolderListLayout'
 import FolderGridLayout from './FolderGridLayout'
 
+import { useFeatureFlags } from '../hooks'
+
 // Disabling SSR for some previews
 const EPUBPreview = dynamic(() => import('./previews/EPUBPreview'), {
   ssr: false,
@@ -147,6 +149,8 @@ export const Downloading: FC<{ title: string; style: string }> = ({ title, style
 }
 
 const FileListing: FC<{ query?: ParsedUrlQuery }> = ({ query }) => {
+  const isDev = process.env.NEXT_PUBLIC_DEV === 'true'
+
   const [selected, setSelected] = useState<{ [key: string]: boolean }>({})
   const [totalSelected, setTotalSelected] = useState<0 | 1 | 2>(0)
   const [totalGenerating, setTotalGenerating] = useState<boolean>(false)
@@ -157,6 +161,9 @@ const FileListing: FC<{ query?: ParsedUrlQuery }> = ({ query }) => {
   const router = useRouter()
   const hashedToken = getStoredToken(router.asPath)
   const [layout, _] = useLocalStorage('preferredLayout', layouts[0])
+  const {
+    featureFlags: { flagDisableDownload: flagDisableDownload,flagGalleryView },
+  } = useFeatureFlags()
 
   const { t } = useTranslation()
 
@@ -164,8 +171,13 @@ const FileListing: FC<{ query?: ParsedUrlQuery }> = ({ query }) => {
 
   const { data, error, size, setSize } = useProtectedSWRInfinite(path)
 
+  if (isDev) {
+    //
+  }
+
   if (error) {
     // If error includes 403 which means the user has not completed initial setup, redirect to OAuth page
+    console.log('err happened', error)
     if (error.status === 403) {
       router.push('/onedrive-vercel-index-oauth/step-1')
       return <div />
@@ -337,6 +349,7 @@ const FileListing: FC<{ query?: ParsedUrlQuery }> = ({ query }) => {
       folderGenerating,
       handleSelectedPermalink,
       handleFolderDownload,
+      flagDisableDownload,
     }
 
     return (
@@ -389,47 +402,49 @@ const FileListing: FC<{ query?: ParsedUrlQuery }> = ({ query }) => {
     )
   }
 
-  if ('file' in responses[0] && responses.length === 1) {
-    const file = responses[0].file as OdFileObject
-    const previewType = getPreviewType(getExtension(file.name), { video: Boolean(file.video) })
+  if (!flagGalleryView) {
+    if ('file' in responses[0] && responses.length === 1) {
+      const file = responses[0].file as OdFileObject
+      const previewType = getPreviewType(getExtension(file.name), { video: Boolean(file.video) })
 
-    if (previewType) {
-      switch (previewType) {
-        case preview.image:
-          return <ImagePreview file={file} />
+      if (previewType) {
+        switch (previewType) {
+          case preview.image:
+            return <ImagePreview file={file} />
 
-        case preview.text:
-          return <TextPreview file={file} />
+          case preview.text:
+            return <TextPreview file={file} />
 
-        case preview.code:
-          return <CodePreview file={file} />
+          case preview.code:
+            return <CodePreview file={file} />
 
-        case preview.markdown:
-          return <MarkdownPreview file={file} path={path} />
+          case preview.markdown:
+            return <MarkdownPreview file={file} path={path} />
 
-        case preview.video:
-          return <VideoPreview file={file} />
+          case preview.video:
+            return <VideoPreview file={file} />
 
-        case preview.audio:
-          return <AudioPreview file={file} />
+          case preview.audio:
+            return <AudioPreview file={file} />
 
-        case preview.pdf:
-          return <PDFPreview file={file} />
+          case preview.pdf:
+            return <PDFPreview file={file} />
 
-        case preview.office:
-          return <OfficePreview file={file} />
+          case preview.office:
+            return <OfficePreview file={file} />
 
-        case preview.epub:
-          return <EPUBPreview file={file} />
+          case preview.epub:
+            return <EPUBPreview file={file} />
 
-        case preview.url:
-          return <URLPreview file={file} />
+          case preview.url:
+            return <URLPreview file={file} />
 
-        default:
-          return <DefaultPreview file={file} />
+          default:
+            return <DefaultPreview file={file} />
+        }
+      } else {
+        return <DefaultPreview file={file} />
       }
-    } else {
-      return <DefaultPreview file={file} />
     }
   }
 
