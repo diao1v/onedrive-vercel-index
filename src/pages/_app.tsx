@@ -3,6 +3,7 @@ import '@fortawesome/fontawesome-svg-core/styles.css'
 import '../styles/globals.css'
 import '../styles/markdown-github.css'
 import { Analytics } from '@vercel/analytics/react';
+import { FeatureFlagProvider } from '../hooks'
 
 // Require had to be used to prevent SSR failure in Next.js
 // Related discussion: https://github.com/FortAwesome/Font-Awesome/issues/19348
@@ -123,9 +124,11 @@ library.add(
 function MyApp({ Component, pageProps }: AppProps) {
   return (
     <>
-      <NextNProgress height={1} color="rgb(156, 163, 175, 0.9)" options={{ showSpinner: false }} />
-      <Analytics />
-      <Component {...pageProps} />
+      <FeatureFlagProvider>
+        <NextNProgress height={1} color="rgb(156, 163, 175, 0.9)" options={{ showSpinner: false }} />
+        <Component {...pageProps} />
+        <Analytics />
+      </FeatureFlagProvider>
     </>
   )
 }
