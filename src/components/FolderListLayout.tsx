@@ -11,7 +11,6 @@ import { humanFileSize, formatModifiedDateTime } from '../utils/fileDetails'
 
 import { Downloading, Checkbox, ChildIcon, ChildName } from './FileListing'
 import { getStoredToken } from '../utils/protectedRouteHandler'
-import { useFeatureFlags } from '../hooks'
 
 const FileListItem: FC<{ fileContent: OdFolderChildren }> = ({ fileContent: c }) => {
   return (
