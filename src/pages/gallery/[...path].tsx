@@ -15,20 +15,21 @@ import { getStoredToken } from '../../utils/protectedRouteHandler'
 export default function Gallery() {
   const { query, asPath} = useRouter();
   const { path } = query;
-  const hashedToken = getStoredToken(asPath)
+  const hashedToken = getStoredToken(path?path[0]:'')
 
   console.log('asPath in gallery: ', asPath)
+  console.log('path in gallery: ', path)
   console.log('hashedToken: ', hashedToken)
 
   
-  const folderPath = Array.isArray(path) && path.length > 1 ? '/' + path.slice(2).join('/') : '';
+  const folderPath = Array.isArray(path) && path.length > 1 ? '/' + path.slice(0).join('/') : '';
 
   console.log('folderPath in gallery: ', folderPath)
 
   const encodeFolderPath = encodeURIComponent(folderPath)
 
   console.log('encodeFolderPath in gallery: ', encodeFolderPath)
-  const { data, error } = useProtectedSWRInfinite(`/${encodeFolderPath}`)
+  const { data, error } = useProtectedSWRInfinite(`${encodeFolderPath}`)
 
   const responses: any[] = data ? [].concat(...data) : []
     // Expand list of API returns into flattened file data
@@ -66,7 +67,8 @@ export default function Gallery() {
       <main className="flex w-full flex-1 flex-col bg-gray-50 dark:bg-gray-800">
         <Navbar />
         <div className="mx-auto w-full max-w-5xl py-4 sm:p-4">
-          <ImageGallery images={imageGallery}/>
+          {/* <ImageGallery images={imageGallery}/> */}
+          { `gallery view`}
         </div>
       </main>
 
