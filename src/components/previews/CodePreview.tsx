@@ -15,7 +15,10 @@ import { DownloadBtnContainer, PreviewContainer } from './Containers'
 
 const CodePreview: FC<{ file: any }> = ({ file }) => {
   const { asPath } = useRouter()
+
+  console.info('CodePreview', file, asPath)
   const { response: content, error, validating } = useFileContent(`/api/raw/?path=${asPath}`, asPath)
+  console.info('CodePreview response', content)
 
   const theme = useSystemTheme('dark')
   const { t } = useTranslation()

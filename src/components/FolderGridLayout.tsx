@@ -68,6 +68,7 @@ const FolderGridLayout = ({
   handleFolderDownload,
   toast,
   flagDisableDownload,
+  flagGalleryView,
 }) => {
   const clipboard = useClipboard()
   const hashedToken = getStoredToken(path)
@@ -75,12 +76,20 @@ const FolderGridLayout = ({
   const { t } = useTranslation()
 
   // Get item path from item name
-  const getItemPath = (name: string) => `${path === '/' ? '' : path}/${encodeURIComponent(name)}`
+  const getItemPath = (name: string, isGalleryView?: boolean) => {
+    return isGalleryView
+      ? `gallery/${path === '/' ? '' : path}`
+      : `${path === '/' ? '' : path}/${encodeURIComponent(name)}`
+  }
+
+  const folderChildrenImage = folderChildren.filter((child: OdFolderChildren) => child.file?.mimeType.includes('image'))
+
+  const updatedFolderChildren = flagGalleryView ? folderChildrenImage : folderChildren
 
   return (
     <div className="rounded bg-white shadow-sm dark:bg-gray-900 dark:text-gray-100">
       <div className="flex items-center border-b border-gray-900/10 px-3 text-xs font-bold uppercase tracking-widest text-gray-600 dark:border-gray-500/30 dark:text-gray-400">
-        <div className="flex-1 p-1.5">{t('{{count}} item(s)', { count: folderChildren.length })}</div>
+        <div className="flex-1 p-1.5">{t('{{count}} item(s)', { count: updatedFolderChildren.length })}</div>
         <div className="flex p-1.5 text-gray-700 dark:text-gray-400">
           {flagDisableDownload ? null : (
             <>
@@ -119,7 +128,7 @@ const FolderGridLayout = ({
       </div>
 
       <div className="grid grid-cols-2 gap-3 p-3 md:grid-cols-4">
-        {folderChildren.map((c: OdFolderChildren) => (
+        {updatedFolderChildren.map((c: OdFolderChildren) => (
           <div
             key={c.id}
             className="group relative overflow-hidden rounded transition-all duration-100 hover:bg-gray-100 dark:hover:bg-gray-850"
@@ -195,9 +204,8 @@ const FolderGridLayout = ({
                 </div>
               </>
             )}
-
-            <Link href={getItemPath(c.name)} passHref>
-              <GridItem c={c} path={getItemPath(c.name)} />
+            <Link href={getItemPath(c.name, flagGalleryView)} passHref>
+              <GridItem c={c} path={getItemPath(c.name, flagGalleryView)} />
             </Link>
           </div>
         ))}

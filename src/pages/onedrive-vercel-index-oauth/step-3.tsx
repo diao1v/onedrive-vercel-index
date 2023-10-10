@@ -111,7 +111,7 @@ export default function OAuthStep3({ accessToken, expiryTime, refreshToken, erro
               {t('Welcome to your new onedrive-vercel-index 🎉')}
             </h3>
 
-            <h3 className="mt-4 mb-2 text-lg font-medium">{t('Step 3/3: Get access and refresh tokens')}</h3>
+            <h3 className="mb-2 mt-4 text-lg font-medium">{t('Step 3/3: Get access and refresh tokens')}</h3>
             {error ? (
               <div>
                 <p className="py-1 font-medium text-red-500">
