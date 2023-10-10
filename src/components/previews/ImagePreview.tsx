@@ -12,6 +12,8 @@ const ImagePreview: FC<{ file: OdFileObject }> = ({ file }) => {
   const { asPath } = useRouter()
   const hashedToken = getStoredToken(asPath)
 
+  console.log('hashedToken in image preview: ', hashedToken)
+
   console.log('asPath in image preview: ', asPath)
 
   let height
