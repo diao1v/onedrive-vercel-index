@@ -15,14 +15,15 @@ import { getStoredToken } from '../../utils/protectedRouteHandler'
 export default function Gallery() {
   const { query, asPath} = useRouter();
   const { path } = query;
-  const hashedToken = getStoredToken(path?path[0]:'')
+  const hashedPath = `/${path?path[0]:''}}`
+  const hashedToken = getStoredToken(hashedPath)
 
   console.log('asPath in gallery: ', asPath)
   console.log('path in gallery: ', path)
   console.log('hashedToken: ', hashedToken)
 
   
-  const folderPath = Array.isArray(path) && path.length > 1 ? '/' + path.slice(0).join('/') : '';
+  const folderPath = Array.isArray(path) && path.length > 0 ? '/' + path.slice(0).join('/') : '';
 
   console.log('folderPath in gallery: ', folderPath)
 

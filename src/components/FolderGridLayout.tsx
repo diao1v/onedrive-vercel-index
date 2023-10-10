@@ -205,7 +205,7 @@ const FolderGridLayout = ({
               </>
             )}
             <Link href={getItemPath(c.name, flagGalleryView)} passHref>
-              <GridItem c={c} path={getItemPath(c.name, flagGalleryView)} />
+              <GridItem c={c} path={getItemPath(c.name, false)} />
             </Link>
           </div>
         ))}
