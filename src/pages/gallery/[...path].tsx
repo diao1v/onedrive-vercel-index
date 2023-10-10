@@ -13,24 +13,42 @@ import { getStoredToken } from '../../utils/protectedRouteHandler'
 
 
 export default function Gallery() {
-  const { query, asPath} = useRouter();
-  const { path } = query;
-  const pathToGetToken = `/${path?path[0]:''}`
-  const hashedToken = getStoredToken(pathToGetToken)
+  // const { query, asPath} = useRouter();
+  // const { path } = query;
+  // const pathToGetToken = `/${path?path[0]:''}`
+  // const hashedToken = getStoredToken(pathToGetToken)
 
-  console.log('asPath in gallery: ', asPath)
-  console.log('path in gallery: ', path)
-  console.log('hashedToken: ', hashedToken)
+  // console.log('asPath in gallery: ', asPath)
+  // console.log('path in gallery: ', path)
+  // console.log('hashedToken: ', hashedToken)
 
   
-  const folderPath = Array.isArray(path) && path.length > 0 ? '/' + path.slice(0).join('/') : '';
+  // const folderPath = Array.isArray(path) && path.length > 0 ? '/' + path.slice(0).join('/') : '';
 
-  console.log('folderPath in gallery: ', folderPath)
+  // console.log('folderPath in gallery: ', folderPath)
 
-  const encodeFolderPath = encodeURIComponent(folderPath)
+  // const encodeFolderPath = encodeURIComponent(folderPath)
 
-  console.log('encodeFolderPath in gallery: ', encodeFolderPath)
-  const { data, error } = useProtectedSWRInfinite(`/${encodeFolderPath}`)
+  // console.log('encodeFolderPath in gallery: ', encodeFolderPath)
+
+  const { asPath } = useRouter();
+  const galleryRouteRegex = /\/gallery\/(.*)/;
+
+  const match = asPath.match(galleryRouteRegex);
+  let protectedFolderPath = ''
+  let endDirFolderPath = ''
+  if (match) { 
+    endDirFolderPath = match[1];
+    protectedFolderPath = endDirFolderPath.split('/')[0]
+  }
+
+  console.log('protectedFolderPath in gallery: ', protectedFolderPath)
+  console.log('endDirFolderPath in gallery: ', endDirFolderPath)
+
+  const hashedToken = getStoredToken(`/${endDirFolderPath}`)
+
+
+  const { data, error } = useProtectedSWRInfinite(`/${endDirFolderPath}`)
 
   const responses: any[] = data ? [].concat(...data) : []
     // Expand list of API returns into flattened file data
@@ -43,7 +61,7 @@ export default function Gallery() {
       const imageItem: GalleryImageItem = {
         index: 1,
         id: child.id,
-        src: `/api/raw/?path=${encodeFolderPath}/${encodeImageName}${hashedToken ? `&odpt=${hashedToken}` : ''}`,
+        src: `/api/raw/?path=${protectedFolderPath}/${encodeImageName}${hashedToken ? `&odpt=${hashedToken}` : ''}`,
         size: {
           width: child.image?.width || 0,
           height: child.image?.height || 0,
