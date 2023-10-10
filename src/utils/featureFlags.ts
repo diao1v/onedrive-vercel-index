@@ -1,4 +1,3 @@
-
 export type FeatureFlags = {
   flagGalleryView: boolean
   flagDisableDownload: boolean

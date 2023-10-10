@@ -76,12 +76,16 @@ const FolderGridLayout = ({
   const { t } = useTranslation()
 
   // Get item path from item name
-  const getItemPath = (name: string) => `${path === '/' ? '' : path}/${encodeURIComponent(name)}`
+  const getItemPath = (name: string, isGalleryView?: boolean) => {
+    return isGalleryView
+      ? `gallery/${path === '/' ? '' : path}/${encodeURIComponent(name)}`
+      : `${path === '/' ? '' : path}/${encodeURIComponent(name)}`
+  }
 
-  const folderChildrenImage = folderChildren.filter((child: OdFolderChildren) => child.file?.mimeType.includes("image"))
-  
+  const folderChildrenImage = folderChildren.filter((child: OdFolderChildren) => child.file?.mimeType.includes('image'))
+
   const updatedFolderChildren = flagGalleryView ? folderChildrenImage : folderChildren
- 
+
   return (
     <div className="rounded bg-white shadow-sm dark:bg-gray-900 dark:text-gray-100">
       <div className="flex items-center border-b border-gray-900/10 px-3 text-xs font-bold uppercase tracking-widest text-gray-600 dark:border-gray-500/30 dark:text-gray-400">
@@ -200,8 +204,8 @@ const FolderGridLayout = ({
                 </div>
               </>
             )}
-            <Link href={getItemPath(c.name)} passHref>
-              <GridItem c={c} path={getItemPath(c.name)} />
+            <Link href={getItemPath(c.name, flagGalleryView)} passHref>
+              <GridItem c={c} path={getItemPath(c.name, flagGalleryView)} />
             </Link>
           </div>
         ))}

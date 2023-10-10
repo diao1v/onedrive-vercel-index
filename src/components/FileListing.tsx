@@ -41,10 +41,8 @@ import FolderListLayout from './FolderListLayout'
 import FolderGridLayout from './FolderGridLayout'
 
 import { featureFlags } from '../utils'
-import type {FeatureFlags} from '../utils/featureFlags'
+import type { FeatureFlags } from '../utils/featureFlags'
 import useFileContent from '../utils/fetchOnMount'
-
-
 
 // Disabling SSR for some previews
 const EPUBPreview = dynamic(() => import('./previews/EPUBPreview'), {
@@ -166,21 +164,19 @@ const FileListing: FC<{ query?: ParsedUrlQuery }> = ({ query }) => {
   const hashedToken = getStoredToken(router.asPath)
   const [layout, _] = useLocalStorage('preferredLayout', layouts[0])
 
-  
   const { t } = useTranslation()
-  
+
   const path = queryToPath(query)
-  
+
   const { data, error, size, setSize } = useProtectedSWRInfinite(path)
 
-  let flagDisableDownload: boolean;
-  let flagGalleryView: boolean;
-  
-  const { FEATURE_FLAGS: {
-    flagDisableDownload: globalFlagDisableDownload,
-    flagGalleryView: globalFlagGalleryView,
-  } } = featureFlags
-  
+  let flagDisableDownload: boolean
+  let flagGalleryView: boolean
+
+  const {
+    FEATURE_FLAGS: { flagDisableDownload: globalFlagDisableDownload, flagGalleryView: globalFlagGalleryView },
+  } = featureFlags
+
   flagDisableDownload = globalFlagDisableDownload
   flagGalleryView = globalFlagGalleryView
 
@@ -189,12 +185,12 @@ const FileListing: FC<{ query?: ParsedUrlQuery }> = ({ query }) => {
 
   if (folderSettings) {
     const folderSettingsJson = JSON.parse(folderSettings) as FeatureFlags
-    const { flagDisableDownload: remoteFlagDisableDownload, flagGalleryView: remoteFlagGalleryView } = folderSettingsJson
-    
+    const { flagDisableDownload: remoteFlagDisableDownload, flagGalleryView: remoteFlagGalleryView } =
+      folderSettingsJson
+
     flagDisableDownload = remoteFlagDisableDownload ?? flagDisableDownload
     flagGalleryView = remoteFlagGalleryView ?? flagGalleryView
   }
-
 
   if (isDev) {
     //
@@ -378,7 +374,7 @@ const FileListing: FC<{ query?: ParsedUrlQuery }> = ({ query }) => {
       flagGalleryView,
     }
 
-    return (        
+    return (
       <>
         <Toaster />
 
