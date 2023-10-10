@@ -1,6 +1,6 @@
 import React from 'react'
 import "react-image-gallery/styles/css/image-gallery.css";
-import ImageGallery from "react-image-gallery";
+import { ImageGallery as LibImageGallery } from "react-image-gallery";
 import type { GalleryImageItem } from '../types'
 
 type GalleryProps = {
@@ -9,7 +9,7 @@ type GalleryProps = {
 
 
 
-const Gallery: React.FC<GalleryProps> = ({images}) => {
+const ImageGallery: React.FC<GalleryProps> = ({images}) => {
   const imagesWithFormat = images?.map((image: GalleryImageItem) => {
     return {
       original: image.src,
@@ -34,9 +34,9 @@ const Gallery: React.FC<GalleryProps> = ({images}) => {
 
     return (
 
-          <ImageGallery items={imagesSamples} />
+          <LibImageGallery items={imagesSamples} />
 
     )
 }
 
-export default Gallery
+export default ImageGallery

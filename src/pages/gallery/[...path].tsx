@@ -5,7 +5,7 @@ import { serverSideTranslations } from 'next-i18next/serverSideTranslations'
 import siteConfig from '../../../config/site.config'
 import Navbar from '../../components/Navbar'
 import Footer from '../../components/Footer'
-import Gallery from '../../components/Gallery'
+import ImageGallery from '../../components/ImageGallery'
 
 import { useProtectedSWRInfinite } from '../../utils/fetchWithSWR'
 import { OdFolderChildren, OdFolderObject, GalleryImageItem } from '../../types'
@@ -60,7 +60,7 @@ export default function Gallery() {
       <main className="flex w-full flex-1 flex-col bg-gray-50 dark:bg-gray-800">
         <Navbar />
         <div className="mx-auto w-full max-w-5xl py-4 sm:p-4">
-          <Gallery images={imageGallery} />
+          <ImageGallery images={imageGallery} />
         </div>
       </main>
 
