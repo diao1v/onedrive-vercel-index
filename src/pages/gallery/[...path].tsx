@@ -15,8 +15,8 @@ import { getStoredToken } from '../../utils/protectedRouteHandler'
 export default function Gallery() {
   const { query, asPath} = useRouter();
   const { path } = query;
-  const hashedPath = `/${path?path[0]:''}`
-  const hashedToken = getStoredToken(hashedPath)
+  const pathToGetToken = `/${path?path[0]:''}`
+  const hashedToken = getStoredToken(pathToGetToken)
 
   console.log('asPath in gallery: ', asPath)
   console.log('path in gallery: ', path)
@@ -43,7 +43,7 @@ export default function Gallery() {
       const imageItem: GalleryImageItem = {
         index: 1,
         id: child.id,
-        src: `/api/raw/?path=/${encodeFolderPath}/${encodeImageName}${hashedToken ? `&odpt=${hashedToken}` : ''}`,
+        src: `/api/raw/?path=${encodeFolderPath}/${encodeImageName}${hashedToken ? `&odpt=${hashedToken}` : ''}`,
         size: {
           width: child.image?.width || 0,
           height: child.image?.height || 0,
