@@ -78,7 +78,7 @@ const FolderGridLayout = ({
   // Get item path from item name
   const getItemPath = (name: string, isGalleryView?: boolean) => {
     return isGalleryView
-      ? `gallery/${path === '/' ? '' : path}`
+      ? `gallery${path === '/' ? '/' : path}`
       : `${path === '/' ? '' : path}/${encodeURIComponent(name)}`
   }
 

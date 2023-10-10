@@ -23,30 +23,36 @@ export default function Gallery() {
   
   const folderPath = Array.isArray(path) && path.length > 1 ? '/' + path.slice(2).join('/') : '';
 
+  console.log('folderPath in gallery: ', folderPath)
+
   const encodeFolderPath = encodeURIComponent(folderPath)
+
+  console.log('encodeFolderPath in gallery: ', encodeFolderPath)
   const { data, error } = useProtectedSWRInfinite(`/${encodeFolderPath}`)
 
   const responses: any[] = data ? [].concat(...data) : []
     // Expand list of API returns into flattened file data
   const folderChildren = [].concat(...responses.map(r => r.folder.value)) as OdFolderObject['value']
 
-  const imageGallery = folderChildren?.map((child: OdFolderChildren) => { 
-
-    const encodeImageName = encodeURIComponent(child.name)
+  const imageGallery = (folderChildren || []).reduce((acc: GalleryImageItem[], child: OdFolderChildren) => {
     
     if (child.file?.mimeType.includes('image')) {
+      const encodeImageName = encodeURIComponent(child.name);
       const imageItem: GalleryImageItem = {
-        index:1,
+        index: 1,
         id: child.id,
         src: `/api/raw/?path=${encodeFolderPath}/${encodeImageName}${hashedToken ? `&odpt=${hashedToken}` : ''}`,
         size: {
           width: child.image?.width || 0,
           height: child.image?.height || 0,
         }
-      }
-      return imageItem
-      }
-  })
+      };
+  
+      acc.push(imageItem); // Push the imageItem to the accumulator
+    }
+  
+    return acc;
+  }, []);
 
   console.log('imageGallery: ', imageGallery)
 
@@ -60,7 +66,7 @@ export default function Gallery() {
       <main className="flex w-full flex-1 flex-col bg-gray-50 dark:bg-gray-800">
         <Navbar />
         <div className="mx-auto w-full max-w-5xl py-4 sm:p-4">
-          <ImageGallery/>
+          <ImageGallery images={imageGallery}/>
         </div>
       </main>
 
