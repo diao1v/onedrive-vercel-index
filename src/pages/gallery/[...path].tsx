@@ -13,23 +13,6 @@ import { getStoredToken } from '../../utils/protectedRouteHandler'
 
 
 export default function Gallery() {
-  // const { query, asPath} = useRouter();
-  // const { path } = query;
-  // const pathToGetToken = `/${path?path[0]:''}`
-  // const hashedToken = getStoredToken(pathToGetToken)
-
-  // console.log('asPath in gallery: ', asPath)
-  // console.log('path in gallery: ', path)
-  // console.log('hashedToken: ', hashedToken)
-
-  
-  // const folderPath = Array.isArray(path) && path.length > 0 ? '/' + path.slice(0).join('/') : '';
-
-  // console.log('folderPath in gallery: ', folderPath)
-
-  // const encodeFolderPath = encodeURIComponent(folderPath)
-
-  // console.log('encodeFolderPath in gallery: ', encodeFolderPath)
 
   const { asPath } = useRouter();
   const galleryRouteRegex = /\/gallery\/(.*)/;
@@ -46,6 +29,7 @@ export default function Gallery() {
   console.log('endDirFolderPath in gallery: ', endDirFolderPath)
 
   const hashedToken = getStoredToken(`/${endDirFolderPath}`)
+  console.log('hashedToken in gallery: ', hashedToken)
 
 
   const { data, error } = useProtectedSWRInfinite(`/${endDirFolderPath}`)
@@ -86,7 +70,7 @@ export default function Gallery() {
       <main className="flex w-full flex-1 flex-col bg-gray-50 dark:bg-gray-800">
         <Navbar />
         <div className="mx-auto w-full max-w-5xl py-4 sm:p-4">
-          {/* <ImageGallery images={imageGallery}/> */}
+          <ImageGallery images={imageGallery}/>
           { `gallery view`}
         </div>
       </main>

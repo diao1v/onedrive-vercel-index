@@ -1,6 +1,6 @@
 import React from 'react'
-import "react-image-gallery/styles/css/image-gallery.css";
-import { ImageGallery as LibImageGallery } from "react-image-gallery";
+import '@mantine/carousel/styles.css';
+import { Carousel } from '@mantine/carousel';
 import type { GalleryImageItem } from '../types'
 
 type GalleryProps = {
@@ -16,7 +16,7 @@ const ImageGallery: React.FC<GalleryProps> = ({images}) => {
       thumbnail: image.src,
     }
   })
-
+  
   console.log('imagesWithFormat in ImageGallery: ', imagesWithFormat)
     
     const imagesSamples = [
@@ -36,8 +36,12 @@ const ImageGallery: React.FC<GalleryProps> = ({images}) => {
 
     return (
 
-          <LibImageGallery items={imagesSamples} />
-
+      <Carousel withIndicators height={200}>
+      <Carousel.Slide><img src='https://picsum.photos/id/1018/1000/600' /></Carousel.Slide>
+      <Carousel.Slide><img src='https://picsum.photos/id/1015/1000/600' /></Carousel.Slide>
+      <Carousel.Slide><img src='https://picsum.photos/id/1019/1000/600' /></Carousel.Slide>
+      {/* ...other slides */}
+    </Carousel>
     )
 }
 
