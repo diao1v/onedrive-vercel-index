@@ -18,13 +18,13 @@ export default function Folders() {
   const theFolderPath = Array.isArray(path) && path.length > 1 ? '/' + path.slice(2).join('/') : '';
 
   
-  console.info(`theFolderPath: ${theFolderPath}`)
+  console.info(`theFolderPath: ${encodeURIComponent(theFolderPath)}`)
 
-  const { data, error } = useProtectedSWRInfinite(`/${theFolderPath}`)
+  const { data, error } = useProtectedSWRInfinite(`/${encodeURIComponent(theFolderPath)}`)
 
   const responses: any[] = data ? [].concat(...data) : []
 
-  console.info(`responses in gallery page: ${responses}`)
+  console.info(`responses in gallery page: ${JSON.stringify(responses)}`)
 
 
     
