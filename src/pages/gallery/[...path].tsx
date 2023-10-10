@@ -28,26 +28,24 @@ export default function Gallery() {
   const responses: any[] = data ? [].concat(...data) : []
     // Expand list of API returns into flattened file data
   const folderChildren = [].concat(...responses.map(r => r.folder.value)) as OdFolderObject['value']
+
   const imageGallery = folderChildren.map((child: OdFolderChildren) => { 
-    let index = 0
+    const encodeImageName = encodeURIComponent(child.name)
     if (child.file?.mimeType.includes('image')) {
       const imageItem: GalleryImageItem = {
-        index,
+        index:1,
         id: child.id,
-        src: `/api/raw/?path=${asPath}${hashedToken ? `&odpt=${hashedToken}` : ''}`,
+        src: `/api/raw/?path=${encodeFolderPath}/${encodeImageName}${hashedToken ? `&odpt=${hashedToken}` : ''}`,
         size: {
           width: child.image?.width || 0,
           height: child.image?.height || 0,
         }
       }
-      index++
       return imageItem
       }
   })
 
-
-  const folderChildrenImage = folderChildren.filter((child: OdFolderChildren) => child.file?.mimeType.includes('image'))
-  
+  console.log('imageGallery: ', imageGallery)
 
 
   return (

@@ -16,7 +16,7 @@ const GridItem = ({ c, path }: { c: OdFolderChildren; path: string }) => {
   const hashedToken = getStoredToken(path)
   const thumbnailUrl =
     'folder' in c ? null : `/api/thumbnail/?path=${path}&size=medium${hashedToken ? `&odpt=${hashedToken}` : ''}`
-  
+
   // Some thumbnails are broken, so we check for onerror event in the image component
   const [brokenThumbnail, setBrokenThumbnail] = useState(false)
 
