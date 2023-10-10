@@ -167,6 +167,8 @@ const FileListing: FC<{ query?: ParsedUrlQuery }> = ({ query }) => {
   const { t } = useTranslation()
 
   const path = queryToPath(query)
+
+  console.info(`path in fileListing: ${path}`)
   const { data, error, size, setSize } = useProtectedSWRInfinite(path)
 
   let flagDisableDownload: boolean

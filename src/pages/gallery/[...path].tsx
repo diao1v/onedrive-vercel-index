@@ -6,17 +6,27 @@ import siteConfig from '../../../config/site.config'
 import Navbar from '../../components/Navbar'
 import Footer from '../../components/Footer'
 
+import { useProtectedSWRInfinite } from '../../utils/fetchWithSWR'
+
+
 export default function Folders() {
   const { pathname } = useRouter()
 
   
   const match = pathname.match(/\/gallery\/(.+)/);
 
-  if (!match) {
-    return null
-  }
 
-  const theFolderPath = match[1]
+  const theFolderPath = match ? match[1] : undefined;
+  
+  console.info(`theFolderPath: ${theFolderPath}`)
+
+  const { data, error } = useProtectedSWRInfinite(theFolderPath)
+
+  const responses: any[] = data ? [].concat(...data) : []
+
+  console.info(`responses in gallery page: ${responses}`)
+
+
     
 
   return (
