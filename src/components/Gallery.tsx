@@ -1,0 +1,42 @@
+import React from 'react'
+import "react-image-gallery/styles/css/image-gallery.css";
+import ImageGallery from "react-image-gallery";
+import type { GalleryImageItem } from '../types'
+
+type GalleryProps = {
+  images: GalleryImageItem[];
+}
+
+
+
+const Gallery: React.FC<GalleryProps> = ({images}) => {
+  const imagesWithFormat = images?.map((image: GalleryImageItem) => {
+    return {
+      original: image.src,
+      thumbnail: image.src,
+    }
+  })
+    
+    const imagesSamples = [
+      {
+        original: "https://picsum.photos/id/1018/1000/600/",
+        thumbnail: "https://picsum.photos/id/1018/250/150/",
+      },
+      {
+        original: "https://picsum.photos/id/1015/1000/600/",
+        thumbnail: "https://picsum.photos/id/1015/250/150/",
+      },
+      {
+        original: "https://picsum.photos/id/1019/1000/600/",
+        thumbnail: "https://picsum.photos/id/1019/250/150/",
+      },
+    ];
+
+    return (
+
+          <ImageGallery items={imagesSamples} />
+
+    )
+}
+
+export default Gallery
