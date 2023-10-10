@@ -9,13 +9,13 @@ type GalleryProps = {
 
 
 
-const ImageGallery: React.FC<GalleryProps> = ({images}) => {
-  const imagesWithFormat = images?.map((image: GalleryImageItem) => {
-    return {
-      original: image.src,
-      thumbnail: image.src,
-    }
-  })
+const ImageGallery: React.FC= () => {
+  // const imagesWithFormat = images?.map((image: GalleryImageItem) => {
+  //   return {
+  //     original: image.src,
+  //     thumbnail: image.src,
+  //   }
+  // })
     
     const imagesSamples = [
       {
