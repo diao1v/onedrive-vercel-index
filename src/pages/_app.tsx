@@ -1,9 +1,14 @@
 import '@fortawesome/fontawesome-svg-core/styles.css'
 import '@mantine/carousel/styles.css';
+import '@mantine/core/styles.css';
+
 
 import '../styles/globals.css'
 import '../styles/markdown-github.css'
 import { Analytics } from '@vercel/analytics/react'
+
+import { MantineProvider, createTheme } from '@mantine/core';
+
 
 // Require had to be used to prevent SSR failure in Next.js
 // Related discussion: https://github.com/FortAwesome/Font-Awesome/issues/19348
@@ -121,12 +126,20 @@ library.add(
   ...iconList
 )
 
+const theme = createTheme({
+  /** Put your mantine theme override here */
+});
+
 function MyApp({ Component, pageProps }: AppProps) {
   return (
     <>
+          <MantineProvider theme={theme}>
+
       <NextNProgress height={1} color="rgb(156, 163, 175, 0.9)" options={{ showSpinner: false }} />
       <Component {...pageProps} />
-      <Analytics />
+        <Analytics />
+        </MantineProvider>
+
     </>
   )
 }

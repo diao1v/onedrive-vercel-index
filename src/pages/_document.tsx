@@ -1,4 +1,6 @@
 import Document, { Head, Html, Main, NextScript } from 'next/document'
+import { ColorSchemeScript } from '@mantine/core';
+
 import siteConfig from '../../config/site.config'
 
 class MyDocument extends Document {
@@ -13,6 +15,8 @@ class MyDocument extends Document {
           {siteConfig.googleFontLinks.map(link => (
             <link key={link} rel="stylesheet" href={link} />
           ))}
+                  <ColorSchemeScript />
+
         </Head>
         <body>
           <Main />
