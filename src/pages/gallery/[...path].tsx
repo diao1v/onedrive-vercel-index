@@ -15,7 +15,7 @@ import { getStoredToken } from '../../utils/protectedRouteHandler'
 export default function Gallery() {
   const { query, asPath} = useRouter();
   const { path } = query;
-  const hashedPath = `/${path?path[0]:''}}`
+  const hashedPath = `/${path?path[0]:''}`
   const hashedToken = getStoredToken(hashedPath)
 
   console.log('asPath in gallery: ', asPath)
@@ -30,7 +30,7 @@ export default function Gallery() {
   const encodeFolderPath = encodeURIComponent(folderPath)
 
   console.log('encodeFolderPath in gallery: ', encodeFolderPath)
-  const { data, error } = useProtectedSWRInfinite(`${encodeFolderPath}`)
+  const { data, error } = useProtectedSWRInfinite(`/${encodeFolderPath}`)
 
   const responses: any[] = data ? [].concat(...data) : []
     // Expand list of API returns into flattened file data
@@ -43,7 +43,7 @@ export default function Gallery() {
       const imageItem: GalleryImageItem = {
         index: 1,
         id: child.id,
-        src: `/api/raw/?path=${encodeFolderPath}/${encodeImageName}${hashedToken ? `&odpt=${hashedToken}` : ''}`,
+        src: `/api/raw/?path=/${encodeFolderPath}/${encodeImageName}${hashedToken ? `&odpt=${hashedToken}` : ''}`,
         size: {
           width: child.image?.width || 0,
           height: child.image?.height || 0,
