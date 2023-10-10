@@ -12,15 +12,16 @@ import { useProtectedSWRInfinite } from '../../utils/fetchWithSWR'
 export default function Folders() {
   const { pathname } = useRouter()
 
+  console.info(`pathname in gallery view: ${pathname}`)
   
-  const match = pathname.match(/\/gallery\/(.+)/);
+  const match = pathname.match(/\/gallery\/([^]+)/);
 
 
   const theFolderPath = match ? match[1] : undefined;
   
   console.info(`theFolderPath: ${theFolderPath}`)
 
-  const { data, error } = useProtectedSWRInfinite(theFolderPath)
+  const { data, error } = useProtectedSWRInfinite(`/${theFolderPath}`)
 
   const responses: any[] = data ? [].concat(...data) : []
 
