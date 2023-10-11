@@ -9,7 +9,7 @@ import { dynamicBlurDataUrl } from '../utils/dynamicBlurDataUrl'
 
 const GalleryImageItem: React.FC<GalleryImageItem> = ({ original_src, thumbnail_src, width, height, alt }) => {
   const [blurData, setBlurData] = useState(
-    `data:image/gif;base64,iVBORw0KGgoAAAANSUhEUgAAAAEAAAABCAQAAAC1HAwCAAAAC0lEQVR42mOcbwsAAYEA3lMjq2UAAAAASUVORK5CYII=`
+    `data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAAAEAAAABCAQAAAC1HAwCAAAAC0lEQVR42mPs9QQAAWkA2AsPhX8AAAAASUVORK5CYII=`
   )
 
   console.log('blurData in GalleryImageItem: ', blurData)
@@ -64,7 +64,7 @@ const GalleryImageItem: React.FC<GalleryImageItem> = ({ original_src, thumbnail_
             alt={alt ?? ''}
             quality={60}
             placeholder="blur"
-            blurDataURL="data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAAAEAAAABCAQAAAC1HAwCAAAAC0lEQVR42mMsrgEAAWgA8UPGHO0AAAAASUVORK5CYII="
+            blurDataURL="data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAAAEAAAABCAQAAAC1HAwCAAAAC0lEQVR42mPs9QQAAWkA2AsPhX8AAAAASUVORK5CYII="
             priority={true}
           />
         )}
