@@ -3,12 +3,7 @@ export const dynamicBlurDataUrl = async (url: string) => {
 
   const encodedUrl = encodeURIComponent(url)
 
-  console.log('baseURL in dynamicBlurDataUrl: ', baseURL)
-  console.log('url in dynamicBlurDataUrl: ', encodedUrl)
-
   const blurImageUrl = `${baseURL}/_next/image?url=${encodedUrl}&w=256&q=40`
-
-  console.log('blurImageUrl in dynamicBlurDataUrl: ', blurImageUrl)
 
   const base64str = await fetch(blurImageUrl).then(async res => Buffer.from(await res.arrayBuffer()).toString('base64'))
 
