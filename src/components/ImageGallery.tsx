@@ -1,5 +1,4 @@
 import React from 'react'
-import '@mantine/carousel/styles.css';
 import type { GalleryImageItem } from '../types'
 
 type GalleryProps = {
