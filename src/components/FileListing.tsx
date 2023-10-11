@@ -43,6 +43,7 @@ import FolderGridLayout from './FolderGridLayout'
 import { featureFlags } from '../utils'
 import type { FeatureFlags } from '../utils/featureFlags'
 import useFileContent from '../utils/fetchOnMount'
+import ImageGallery from './ImageGallery'
 
 // Disabling SSR for some previews
 const EPUBPreview = dynamic(() => import('./previews/EPUBPreview'), {
@@ -194,12 +195,11 @@ const FileListing: FC<{ query?: ParsedUrlQuery }> = ({ query }) => {
   }
 
   if (isDev) {
-    //
+    // leave for local development
   }
 
   if (error) {
     // If error includes 403 which means the user has not completed initial setup, redirect to OAuth page
-    console.log('err happened', error)
     if (error.status === 403) {
       router.push('/onedrive-vercel-index-oauth/step-1')
       return <div />
@@ -373,6 +373,10 @@ const FileListing: FC<{ query?: ParsedUrlQuery }> = ({ query }) => {
       handleFolderDownload,
       flagDisableDownload,
       flagGalleryView,
+    }
+
+    if (flagGalleryView) {
+      return <ImageGallery />
     }
 
     return (
