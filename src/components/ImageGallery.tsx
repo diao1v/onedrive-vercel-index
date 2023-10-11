@@ -23,7 +23,7 @@ const GalleryImageItem: React.FC<GalleryImageItem> = ({ original_src, thumbnail_
               src={original_src}
               width={width}
               height={height}
-              sizes='80vw'
+              sizes='90vh'
               style={{
                 width: ImageStyleSizes.width,
                 height: ImageStyleSizes.height,
