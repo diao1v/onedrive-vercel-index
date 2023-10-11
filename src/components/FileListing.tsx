@@ -1,4 +1,4 @@
-import type { OdFileObject, OdFolderChildren, OdFolderObject } from '../types'
+import type { GalleryImageItem, OdFileObject, OdFolderChildren, OdFolderObject } from '../types'
 import { ParsedUrlQuery } from 'querystring'
 import { FC, MouseEventHandler, SetStateAction, useEffect, useRef, useState } from 'react'
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome'
@@ -40,8 +40,13 @@ import { PreviewContainer } from './previews/Containers'
 import FolderListLayout from './FolderListLayout'
 import FolderGridLayout from './FolderGridLayout'
 
-import {featureFlags} from '../utils'
+import { featureFlags } from '../utils'
+import type { FeatureFlags } from '../utils/featureFlags'
+import useFileContent from '../utils/fetchOnMount'
+import ImageGallery from './ImageGallery'
 
+import imagesMock from '../mocks/imagesMock.json'
+import { resizeImage } from '../utils/getImageFiles'
 
 // Disabling SSR for some previews
 const EPUBPreview = dynamic(() => import('./previews/EPUBPreview'), {
@@ -163,24 +168,65 @@ const FileListing: FC<{ query?: ParsedUrlQuery }> = ({ query }) => {
   const hashedToken = getStoredToken(router.asPath)
   const [layout, _] = useLocalStorage('preferredLayout', layouts[0])
 
-  const { FEATURE_FLAGS: {
-    flagDisableDownload,
-    flagGalleryView,
-  }}  = featureFlags
-
   const { t } = useTranslation()
 
   const path = queryToPath(query)
 
-  const { data, error, size, setSize } = useProtectedSWRInfinite(path)
+  // console.info(`path in fileListing: ${path}`)
+
+  const { data, error, size, setSize, isLoading: isFilesDataLoading } = useProtectedSWRInfinite(path)
+
+  let flagDisableDownload: boolean
+  let flagGalleryView: boolean
+
+  const {
+    FEATURE_FLAGS: { flagDisableDownload: globalFlagDisableDownload, flagGalleryView: globalFlagGalleryView },
+  } = featureFlags
+
+  flagDisableDownload = globalFlagDisableDownload
+  flagGalleryView = globalFlagGalleryView
+
+  const settingFilePath = `${path === '/' ? '' : path}/settings.json`
+  const { response: folderSettingsData, validating: isFolderSettingsDataLoading } = useFileContent(
+    `/api/raw/?path=${settingFilePath}`,
+    settingFilePath
+  )
+
+  if (folderSettingsData) {
+    const folderSettingsJson = JSON.parse(folderSettingsData) as FeatureFlags
+    const { flagDisableDownload: remoteFlagDisableDownload, flagGalleryView: remoteFlagGalleryView } =
+      folderSettingsJson
+
+    flagDisableDownload = remoteFlagDisableDownload ?? flagDisableDownload
+    flagGalleryView = remoteFlagGalleryView ?? flagGalleryView
+  }
 
   if (isDev) {
-    //
+    // leave for local development
+
+    //update the image size
+    const images = imagesMock.map(image => {
+      const originalImageHeight = image.height
+      const originalImageWidth = image.width
+
+      const { width: adjustedWidth, height: adjustedHeight } = resizeImage(originalImageWidth, originalImageHeight)
+
+      const imageItem: GalleryImageItem = {
+        id: image.id,
+        original_src: image.original_src,
+        thumbnail_src: image.thumbnail_src,
+        width: adjustedWidth,
+        height: adjustedHeight,
+        alt: image.alt,
+      }
+
+      return imageItem
+    })
+    return <ImageGallery images={images} />
   }
 
   if (error) {
     // If error includes 403 which means the user has not completed initial setup, redirect to OAuth page
-    console.log('err happened', error)
     if (error.status === 403) {
       router.push('/onedrive-vercel-index-oauth/step-1')
       return <div />
@@ -192,7 +238,7 @@ const FileListing: FC<{ query?: ParsedUrlQuery }> = ({ query }) => {
       </PreviewContainer>
     )
   }
-  if (!data) {
+  if (isFilesDataLoading || isFolderSettingsDataLoading) {
     return (
       <PreviewContainer>
         <Loading loadingText={t('Loading ...')} />
@@ -353,6 +399,37 @@ const FileListing: FC<{ query?: ParsedUrlQuery }> = ({ query }) => {
       handleSelectedPermalink,
       handleFolderDownload,
       flagDisableDownload,
+    }
+
+    // console.info('folderChildren in fileListing: ', folderChildren)
+
+    const folderImages = folderChildren.reduce((acc: GalleryImageItem[], child: OdFolderChildren) => {
+      if (child.file?.mimeType.includes('image')) {
+        const encodeImageName = encodeURIComponent(child.name)
+        const originalImageHeight = child.image!.height!
+        const originalImageWidth = child.image!.width!
+
+        const { width: adjustedWidth, height: adjustedHeight } = resizeImage(originalImageWidth, originalImageHeight)
+
+        const imageItem: GalleryImageItem = {
+          id: child.id,
+          original_src: `/api/raw/?path=${path}/${encodeImageName}${hashedToken ? `&odpt=${hashedToken}` : ''}`,
+          thumbnail_src: `/api/thumbnail/?path=${path}/${encodeImageName}&size=medium${
+            hashedToken ? `&odpt=${hashedToken}` : ''
+          }`,
+          width: adjustedWidth,
+          height: adjustedHeight,
+          alt: child.name,
+        }
+
+        acc.push(imageItem) // Push the imageItem to the accumulator
+      }
+
+      return acc
+    }, [])
+
+    if (flagGalleryView) {
+      return <ImageGallery images={folderImages} />
     }
 
     return (

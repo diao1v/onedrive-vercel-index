@@ -70,3 +70,12 @@ export type OdDriveItem = {
   name: string
   parentReference: { driveId: string; driveType: string; id: string; path: string }
 }
+
+export type GalleryImageItem = {
+  id:string
+  original_src: string
+  thumbnail_src: string
+  width: number
+  height: number
+  alt?: string
+}

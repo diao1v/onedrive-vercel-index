@@ -75,7 +75,9 @@ const FolderGridLayout = ({
   const { t } = useTranslation()
 
   // Get item path from item name
-  const getItemPath = (name: string) => `${path === '/' ? '' : path}/${encodeURIComponent(name)}`
+  const getItemPath = (name: string) => {
+    return `${path === '/' ? '' : path}/${encodeURIComponent(name)}`
+  }
 
   return (
     <div className="rounded bg-white shadow-sm dark:bg-gray-900 dark:text-gray-100">
@@ -195,7 +197,6 @@ const FolderGridLayout = ({
                 </div>
               </>
             )}
-
             <Link href={getItemPath(c.name)} passHref>
               <GridItem c={c} path={getItemPath(c.name)} />
             </Link>

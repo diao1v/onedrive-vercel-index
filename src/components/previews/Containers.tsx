@@ -1,5 +1,4 @@
-import { IconArrowRight, IconArrowLeft } from '@tabler/icons-react';
-
+import { IconArrowRight, IconArrowLeft } from '@tabler/icons-react'
 
 export function PreviewContainer({ children }): JSX.Element {
   return (

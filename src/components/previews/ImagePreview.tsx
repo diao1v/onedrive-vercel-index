@@ -12,14 +12,12 @@ const ImagePreview: FC<{ file: OdFileObject }> = ({ file }) => {
   const { asPath } = useRouter()
   const hashedToken = getStoredToken(asPath)
 
-  let height;
-  let width;
+  let height
+  let width
   if (file.image?.height! > 800) {
-    height = 800;
-    width = file.image?.width! * (800 / file.image?.height!);
+    height = 800
+    width = file.image?.width! * (800 / file.image?.height!)
   }
-
-
 
   return (
     <>
