@@ -380,6 +380,8 @@ const FileListing: FC<{ query?: ParsedUrlQuery }> = ({ query }) => {
       flagDisableDownload,
     }
 
+    console.info(`folderChildren in fileListing: ${folderChildren}`)
+
     const folderImages = folderChildren.reduce((acc: GalleryImageItem[], child: OdFolderChildren) => {
       if (child.file?.mimeType.includes('image')) {
         const encodeImageName = encodeURIComponent(child.name)
