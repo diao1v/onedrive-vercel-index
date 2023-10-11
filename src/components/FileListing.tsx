@@ -45,6 +45,8 @@ import type { FeatureFlags } from '../utils/featureFlags'
 import useFileContent from '../utils/fetchOnMount'
 import ImageGallery from './ImageGallery'
 
+import imagesMock from '../mocks/imagesMock.json'
+
 // Disabling SSR for some previews
 const EPUBPreview = dynamic(() => import('./previews/EPUBPreview'), {
   ssr: false,
@@ -199,6 +201,7 @@ const FileListing: FC<{ query?: ParsedUrlQuery }> = ({ query }) => {
 
   if (isDev) {
     // leave for local development
+    return <ImageGallery images={imagesMock} />
   }
 
   if (error) {
@@ -380,12 +383,12 @@ const FileListing: FC<{ query?: ParsedUrlQuery }> = ({ query }) => {
     const folderImages = folderChildren.reduce((acc: GalleryImageItem[], child: OdFolderChildren) => {
       if (child.file?.mimeType.includes('image')) {
         const encodeImageName = encodeURIComponent(child.name)
-        let imageHeight = child.image?.height || 600
-        let imageWidth = child.image?.width || 900
+        let imageHeight = child.image?.height || 768
+        let imageWidth = child.image?.width || 1024
 
-        if (imageWidth > 900) {
-          imageWidth = 900
-          imageHeight = imageHeight * (900 / imageWidth)
+        if (imageWidth > 1024) {
+          imageWidth = 1024
+          imageHeight = imageHeight * (1024 / imageWidth)
         }
 
         const imageItem: GalleryImageItem = {

@@ -1,0 +1,42 @@
+[
+  {
+    "original_src": "/local-development/1.jpeg",
+    "thumbnail_src": "/local-development/1.jpeg",
+    "width": 2840,
+    "height": 1920,
+    "alt": "Image 1",
+    "id": "1"
+  },
+  {
+    "original_src": "/local-development/2.jpg",
+    "thumbnail_src": "/local-development/2.jpg",
+    "width": 5193,
+    "height": 3462,
+    "alt": "Image 2",
+    "id": "2"
+  },
+  {
+    "original_src": "/local-development/3.JPG",
+    "thumbnail_src": "/local-development/3.JPG",
+    "width": 4016,
+    "height": 6016,
+    "alt": "Image 3",
+    "id": "3"
+  },
+  {
+    "original_src": "/local-development/4.png",
+    "thumbnail_src": "/local-development/4.png",
+    "width": 1744,
+    "height": 672,
+    "alt": "Image 4",
+    "id": "4"
+  },
+  {
+    "original_src": "/local-development/5.png",
+    "thumbnail_src": "/local-development/5.png",
+    "width": 815,
+    "height": 1456,
+    "alt": "Image 5",
+    "id": "5"
+  }
+]
