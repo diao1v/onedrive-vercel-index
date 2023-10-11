@@ -172,7 +172,8 @@ const FileListing: FC<{ query?: ParsedUrlQuery }> = ({ query }) => {
 
   const path = queryToPath(query)
 
-  console.info(`path in fileListing: ${path}`)
+  // console.info(`path in fileListing: ${path}`)
+
   const { data, error, size, setSize, isLoading: isFilesDataLoading } = useProtectedSWRInfinite(path)
 
   let flagDisableDownload: boolean
@@ -400,7 +401,7 @@ const FileListing: FC<{ query?: ParsedUrlQuery }> = ({ query }) => {
       flagDisableDownload,
     }
 
-    console.info('folderChildren in fileListing: ', folderChildren)
+    // console.info('folderChildren in fileListing: ', folderChildren)
 
     const folderImages = folderChildren.reduce((acc: GalleryImageItem[], child: OdFolderChildren) => {
       if (child.file?.mimeType.includes('image')) {

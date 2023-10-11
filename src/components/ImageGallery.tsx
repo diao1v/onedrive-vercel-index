@@ -1,12 +1,25 @@
-import React from 'react'
+import React, { useEffect, useState } from 'react'
 import Image from 'next/image'
 import 'photoswipe/dist/photoswipe.css'
 import { Gallery, Item } from 'react-photoswipe-gallery'
 
 import type { GalleryImageItem } from '../types'
 import { featureFlags } from '../utils'
+import { dynamicBlurDataUrl } from '../utils/dynamicBlurDataUrl'
 
 const GalleryImageItem: React.FC<GalleryImageItem> = ({ original_src, thumbnail_src, width, height, alt }) => {
+  const [blurData, setBlurData] = useState(
+    `data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAAAEAAAABCAYAAAAfFcSJAAAADUlEQVR42mP09vZhAgACsQDmXwe6IgAAAABJRU5ErkJggg==`
+  )
+
+  useEffect(() => {
+    const getBlurData = async () => {
+      const blurDataUrl = await dynamicBlurDataUrl(thumbnail_src)
+      setBlurData(blurDataUrl)
+    }
+    getBlurData()
+  }, [])
+
   const {
     FEATURE_FLAGS: { flagUseCustomSlideInGallery },
   } = featureFlags
@@ -23,12 +36,15 @@ const GalleryImageItem: React.FC<GalleryImageItem> = ({ original_src, thumbnail_
               src={original_src}
               width={width}
               height={height}
-              sizes='80vw'
+              sizes="90vh"
               style={{
                 width: ImageStyleSizes.width,
                 height: ImageStyleSizes.height,
               }}
               alt={alt ?? ''}
+              quality={60}
+              placeholder="blur"
+              blurDataURL={blurData}
             />
           </div>
         }
@@ -41,7 +57,11 @@ const GalleryImageItem: React.FC<GalleryImageItem> = ({ original_src, thumbnail_
             height={height}
             ref={ref as React.MutableRefObject<HTMLImageElement>}
             onClick={open}
+            sizes="15vh"
             alt={alt ?? ''}
+            quality={60}
+            placeholder="blur"
+            blurDataURL="data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAAAEAAAABCAYAAAAfFcSJAAAADUlEQVR42mP09vZhAgACsQDmXwe6IgAAAABJRU5ErkJggg=="
           />
         )}
       </Item>
@@ -70,7 +90,7 @@ type GalleryProps = {
 }
 
 const ImageGallery: React.FC<GalleryProps> = ({ images }) => {
-  console.log('images in ImageGallery: ', images)
+  // console.log('images in ImageGallery: ', images)
   return (
     <Gallery>
       <div className="flex w-full flex-row flex-wrap gap-2">
