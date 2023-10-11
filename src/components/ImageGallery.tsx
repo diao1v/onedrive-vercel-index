@@ -45,7 +45,6 @@ const GalleryImageItem: React.FC<GalleryImageItem> = ({ original_src, thumbnail_
               quality={60}
               placeholder="blur"
               blurDataURL={blurData}
-              priority={true}
             />
           </div>
         }
@@ -62,8 +61,7 @@ const GalleryImageItem: React.FC<GalleryImageItem> = ({ original_src, thumbnail_
             alt={alt ?? ''}
             quality={60}
             placeholder="blur"
-            blurDataURL="data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAAAEAAAABCAQAAAC1HAwCAAAAC0lEQVR42mPs9QQAAWkA2AsPhX8AAAAASUVORK5CYII="
-            priority={true}
+            blurDataURL="data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAAAEAAAABCAYAAAAfFcSJAAAADUlEQVR42mP09vZhAgACsQDmXwe6IgAAAABJRU5ErkJggg=="
           />
         )}
       </Item>
