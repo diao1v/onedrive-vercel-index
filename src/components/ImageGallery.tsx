@@ -6,6 +6,7 @@ import { Gallery, Item } from 'react-photoswipe-gallery'
 import type { GalleryImageItem } from '../types'
 import { featureFlags } from '../utils'
 import { dynamicBlurDataUrl } from '../utils/dynamicBlurDataUrl'
+import { t } from 'i18next'
 
 const GalleryImageItem: React.FC<GalleryImageItem> = ({ original_src, thumbnail_src, width, height, alt }) => {
   const [blurData, setBlurData] = useState(
@@ -42,7 +43,7 @@ const GalleryImageItem: React.FC<GalleryImageItem> = ({ original_src, thumbnail_
                 height: ImageStyleSizes.height,
               }}
               alt={alt ?? ''}
-              quality={60}
+              quality={75}
               placeholder="blur"
               blurDataURL={blurData}
             />
@@ -59,7 +60,7 @@ const GalleryImageItem: React.FC<GalleryImageItem> = ({ original_src, thumbnail_
             onClick={open}
             sizes="15vh"
             alt={alt ?? ''}
-            quality={60}
+            quality={70}
             placeholder="blur"
             blurDataURL="data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAAAEAAAABCAYAAAAfFcSJAAAADUlEQVR42mP09vZhAgACsQDmXwe6IgAAAABJRU5ErkJggg=="
           />
@@ -92,7 +93,12 @@ type GalleryProps = {
 const ImageGallery: React.FC<GalleryProps> = ({ images }) => {
   // console.log('images in ImageGallery: ', images)
   return (
-    <Gallery>
+    <Gallery
+      options={{
+        preload: [1, 3],
+        preloadFirstSlide: true,
+      }}
+    >
       <div className="flex w-full flex-row flex-wrap gap-2">
         {images.map((image, index) => (
           <GalleryImageItem
