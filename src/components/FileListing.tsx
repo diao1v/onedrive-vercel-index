@@ -202,7 +202,26 @@ const FileListing: FC<{ query?: ParsedUrlQuery }> = ({ query }) => {
 
   if (isDev) {
     // leave for local development
-    return <ImageGallery images={imagesMock} />
+
+    //update the image size
+    const images = imagesMock.map(image => {
+      const originalImageHeight = image.height
+      const originalImageWidth = image.width
+
+      const { width: adjustedWidth, height: adjustedHeight } = resizeImage(originalImageWidth, originalImageHeight)
+
+      const imageItem: GalleryImageItem = {
+        id: image.id,
+        original_src: image.original_src,
+        thumbnail_src: image.thumbnail_src,
+        width: adjustedWidth,
+        height: adjustedHeight,
+        alt: image.alt,
+      }
+
+      return imageItem
+    })
+    return <ImageGallery images={images} />
   }
 
   if (error) {
@@ -381,7 +400,7 @@ const FileListing: FC<{ query?: ParsedUrlQuery }> = ({ query }) => {
       flagDisableDownload,
     }
 
-    console.info("folderChildren in fileListing: ", folderChildren)
+    console.info('folderChildren in fileListing: ', folderChildren)
 
     const folderImages = folderChildren.reduce((acc: GalleryImageItem[], child: OdFolderChildren) => {
       if (child.file?.mimeType.includes('image')) {
@@ -389,7 +408,7 @@ const FileListing: FC<{ query?: ParsedUrlQuery }> = ({ query }) => {
         const originalImageHeight = child.image!.height!
         const originalImageWidth = child.image!.width!
 
-        const { width:adjustedWidth, height:adjustedHeight } = resizeImage(originalImageWidth, originalImageHeight)
+        const { width: adjustedWidth, height: adjustedHeight } = resizeImage(originalImageWidth, originalImageHeight)
 
         const imageItem: GalleryImageItem = {
           id: child.id,

@@ -1,11 +1,53 @@
 import React from 'react'
-import Image from 'next/image' // Import the Image component from Next.js
+import Image from 'next/image'
 import 'photoswipe/dist/photoswipe.css'
 import { Gallery, Item } from 'react-photoswipe-gallery'
 
 import type { GalleryImageItem } from '../types'
+import { featureFlags } from '../utils'
 
 const GalleryImageItem: React.FC<GalleryImageItem> = ({ original_src, thumbnail_src, width, height, alt }) => {
+  const {
+    FEATURE_FLAGS: { flagUseCustomSlideInGallery },
+  } = featureFlags
+
+  const isHorizontal = width > height
+  const ImageStyleSizes = isHorizontal ? { width: '80%', height: 'auto' } : { width: 'auto', height: '95%' }
+
+  if (flagUseCustomSlideInGallery) {
+    return (
+      <Item
+        content={
+          <div className="flex h-full items-center justify-center">
+            <Image
+              src={original_src}
+              width={width}
+              height={height}
+              sizes='80vw'
+              style={{
+                width: ImageStyleSizes.width,
+                height: ImageStyleSizes.height,
+              }}
+              alt={alt ?? ''}
+            />
+          </div>
+        }
+      >
+        {({ ref, open }) => (
+          <Image
+            className="relative h-40 w-52 cursor-pointer object-cover"
+            src={thumbnail_src}
+            width={width}
+            height={height}
+            ref={ref as React.MutableRefObject<HTMLImageElement>}
+            onClick={open}
+            alt={alt ?? ''}
+          />
+        )}
+      </Item>
+    )
+  }
+
   return (
     <Item original={original_src} thumbnail={thumbnail_src} width={width} height={height} alt={alt}>
       {({ ref, open }) => (
