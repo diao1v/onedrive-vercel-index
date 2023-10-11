@@ -9,7 +9,7 @@ import { dynamicBlurDataUrl } from '../utils/dynamicBlurDataUrl'
 
 const GalleryImageItem: React.FC<GalleryImageItem> = ({ original_src, thumbnail_src, width, height, alt }) => {
   const [blurData, setBlurData] = useState(
-    `data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAAAEAAAABCAQAAAC1HAwCAAAAC0lEQVR42mPs9QQAAWkA2AsPhX8AAAAASUVORK5CYII=`
+    `data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAAAEAAAABCAYAAAAfFcSJAAAADUlEQVR42mP09vZhAgACsQDmXwe6IgAAAABJRU5ErkJggg==`
   )
 
   useEffect(() => {
