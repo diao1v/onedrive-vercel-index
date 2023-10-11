@@ -1,5 +1,9 @@
 export const dynamicBlurDataUrl = async (url: string) => {
   const baseURL = process.env.NODE_ENV === 'development' ? 'http://localhost:3000' : window.location.origin
+
+  console.log('baseURL in dynamicBlurDataUrl: ', baseURL)
+  console.log('url in dynamicBlurDataUrl: ', url)
+
   const base64str = await fetch(`${baseURL}/_next/image?url=${url}&w=256&q=40`).then(async res =>
     Buffer.from(await res.arrayBuffer()).toString('base64')
   )

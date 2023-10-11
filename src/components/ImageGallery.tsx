@@ -12,6 +12,8 @@ const GalleryImageItem: React.FC<GalleryImageItem> = ({ original_src, thumbnail_
     `data:image/gif;base64,iVBORw0KGgoAAAANSUhEUgAAAAEAAAABCAQAAAC1HAwCAAAAC0lEQVR42mOcbwsAAYEA3lMjq2UAAAAASUVORK5CYII=`
   )
 
+  console.log('blurData in GalleryImageItem: ', blurData)
+
   useEffect(() => {
     const getBlurData = async () => {
       const blurDataUrl = await dynamicBlurDataUrl(original_src)
@@ -60,7 +62,9 @@ const GalleryImageItem: React.FC<GalleryImageItem> = ({ original_src, thumbnail_
             onClick={open}
             sizes="15vh"
             alt={alt ?? ''}
-            quality={40}
+            quality={60}
+            placeholder="blur"
+            blurDataURL="data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAAAEAAAABCAQAAAC1HAwCAAAAC0lEQVR42mMsrgEAAWgA8UPGHO0AAAAASUVORK5CYII="
             priority={true}
           />
         )}
