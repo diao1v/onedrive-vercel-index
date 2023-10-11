@@ -84,3 +84,5 @@ Temporary Items
 
 # local development files
 local-development
+public/local-development
+public/local-development/*

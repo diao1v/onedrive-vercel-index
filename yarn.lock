@@ -4332,6 +4332,11 @@ pdfjs-dist@^2.16.105:
     dommatrix "^1.0.3"
     web-streams-polyfill "^3.2.1"
 
+photoswipe@^5.4.2:
+  version "5.4.2"
+  resolved "https://registry.yarnpkg.com/photoswipe/-/photoswipe-5.4.2.tgz#bed976c27f876bd9c86085a022701a8cea484f7e"
+  integrity sha512-z5hr36nAIPOZbHJPbCJ/mQ3+ZlizttF9za5gKXKH/us1k4KNHaRbC63K1Px5sVVKUtGb/2+ixHpKqtwl0WAwvA==
+
 picocolors@^1.0.0:
   version "1.0.0"
   resolved "https://registry.yarnpkg.com/picocolors/-/picocolors-1.0.0.tgz#cb5bdc74ff3f51892236eaf79d68bc44564ab81c"
@@ -4646,6 +4651,11 @@ react-markdown@^8.0.5:
     unified "^10.0.0"
     unist-util-visit "^4.0.0"
     vfile "^5.0.0"
+
+react-photoswipe-gallery@^2.2.7:
+  version "2.2.7"
+  resolved "https://registry.yarnpkg.com/react-photoswipe-gallery/-/react-photoswipe-gallery-2.2.7.tgz#27fd45e84a3b7f15846761830c600b2c719053e3"
+  integrity sha512-AEYNoL4/IIRosIUonn4haaFQNn1ui4vdVgAY9LHd/imVamNCkqUcyWeT6317UILp/yJI2gohsd3lWmcJEbjCag==
 
 react-reader@^1.0.2:
   version "1.2.1"

@@ -1,42 +1,51 @@
 import React from 'react'
+import Image from 'next/image' // Import the Image component from Next.js
+import 'photoswipe/dist/photoswipe.css'
+import { Gallery, Item } from 'react-photoswipe-gallery'
+
 import type { GalleryImageItem } from '../types'
 
-type GalleryProps = {
-  images: GalleryImageItem[];
+const GalleryImageItem: React.FC<GalleryImageItem> = ({ original_src, thumbnail_src, width, height, alt }) => {
+  return (
+    <Item original={original_src} thumbnail={thumbnail_src} width={width} height={height} alt={alt}>
+      {({ ref, open }) => (
+        <Image
+          className="relative h-40 w-52 cursor-pointer object-cover"
+          src={thumbnail_src}
+          width={width}
+          height={height}
+          ref={ref as React.MutableRefObject<HTMLImageElement>}
+          onClick={open}
+          alt={alt ?? ''}
+        />
+      )}
+    </Item>
+  )
 }
 
+type GalleryProps = {
+  images: GalleryImageItem[]
+}
 
-
-const ImageGallery: React.FC<GalleryProps> = ({images}) => {
-  const imagesWithFormat = images?.map((image: GalleryImageItem) => {
-    return {
-      original: image.src,
-      thumbnail: image.src,
-    }
-  })
-
-  console.log('imagesWithFormat in ImageGallery: ', imagesWithFormat)
-    
-    const imagesSamples = [
-      {
-        original: "https://picsum.photos/id/1018/1000/600/",
-        thumbnail: "https://picsum.photos/id/1018/250/150/",
-      },
-      {
-        original: "https://picsum.photos/id/1015/1000/600/",
-        thumbnail: "https://picsum.photos/id/1015/250/150/",
-      },
-      {
-        original: "https://picsum.photos/id/1019/1000/600/",
-        thumbnail: "https://picsum.photos/id/1019/250/150/",
-      },
-    ];
-
-    return (
-
-      <>image gallery
-      </>
-    )
+const ImageGallery: React.FC<GalleryProps> = ({ images }) => {
+  console.log('images in ImageGallery: ', images)
+  return (
+    <Gallery>
+      <div className="flex w-full flex-row flex-wrap gap-2">
+        {images.map((image, index) => (
+          <GalleryImageItem
+            key={index}
+            original_src={image.original_src}
+            thumbnail_src={image.thumbnail_src}
+            width={image.width}
+            height={image.height}
+            alt={image.alt}
+            id={image.id}
+          />
+        ))}
+      </div>
+    </Gallery>
+  )
 }
 
 export default ImageGallery
