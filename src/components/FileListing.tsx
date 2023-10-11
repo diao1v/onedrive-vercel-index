@@ -374,8 +374,7 @@ const FileListing: FC<{ query?: ParsedUrlQuery }> = ({ query }) => {
       folderGenerating,
       handleSelectedPermalink,
       handleFolderDownload,
-      flagDisableDownload,
-      flagGalleryView,
+      flagDisableDownload
     }
 
     const folderImages = folderChildren.reduce((acc: GalleryImageItem[], child: OdFolderChildren) => {
