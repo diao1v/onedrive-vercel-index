@@ -46,6 +46,7 @@ import useFileContent from '../utils/fetchOnMount'
 import ImageGallery from './ImageGallery'
 
 import imagesMock from '../mocks/imagesMock.json'
+import { resizeImage } from '../utils/getImageFiles'
 
 // Disabling SSR for some previews
 const EPUBPreview = dynamic(() => import('./previews/EPUBPreview'), {
@@ -385,13 +386,10 @@ const FileListing: FC<{ query?: ParsedUrlQuery }> = ({ query }) => {
     const folderImages = folderChildren.reduce((acc: GalleryImageItem[], child: OdFolderChildren) => {
       if (child.file?.mimeType.includes('image')) {
         const encodeImageName = encodeURIComponent(child.name)
-        let imageHeight = child.image?.height || 768
-        let imageWidth = child.image?.width || 1024
+        const originalImageHeight = child.image!.height!
+        const originalImageWidth = child.image!.width!
 
-        if (imageWidth > 1024) {
-          imageWidth = 1024
-          imageHeight = imageHeight * (768 / imageHeight)
-        }
+        const { width:adjustedWidth, height:adjustedHeight } = resizeImage(originalImageWidth, originalImageHeight)
 
         const imageItem: GalleryImageItem = {
           id: child.id,
@@ -399,8 +397,8 @@ const FileListing: FC<{ query?: ParsedUrlQuery }> = ({ query }) => {
           thumbnail_src: `/api/thumbnail/?path=${path}/${encodeImageName}&size=medium${
             hashedToken ? `&odpt=${hashedToken}` : ''
           }`,
-          width: imageWidth,
-          height: imageHeight,
+          width: adjustedWidth,
+          height: adjustedHeight,
           alt: child.name,
         }
 
