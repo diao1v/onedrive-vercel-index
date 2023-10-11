@@ -27,65 +27,12 @@ type GalleryProps = {
   images: GalleryImageItem[]
 }
 
-const ImageGallery: React.FC<GalleryProps> = ({ images: testImages }) => {
-  console.log('testImages: ', testImages)
-
-  // const images: GalleryImageItem[] = [
-  //   {
-  //     original: 'https://farm6.staticflickr.com/5591/15008867125_b61960af01_h.jpg',
-  //     thumbnail: 'https://farm6.staticflickr.com/5591/15008867125_68a8ed88cc_m.jpg',
-  //     width: 1600,
-  //     height: 1068,
-  //     alt: 'Photo of mountain lake by Samuel Rohl',
-  //   },
-  //   {
-  //     original: 'https://farm4.staticflickr.com/3894/15008518202_c265dfa55f_h.jpg',
-  //     thumbnail: 'https://farm4.staticflickr.com/3894/15008518202_b016d7d289_m.jpg',
-  //     width: 1600,
-  //     height: 1600,
-  //     alt: 'Photo of seashore by Folkert Gorter',
-  //   },
-  //   {
-  //     original: 'https://farm6.staticflickr.com/5591/15008867125_b61960af01_h.jpg',
-  //     thumbnail: 'https://farm6.staticflickr.com/5591/15008867125_68a8ed88cc_m.jpg',
-  //     width: 1600,
-  //     height: 1068,
-  //     alt: 'Photo of mountain lake by Samuel Rohl',
-  //   },
-  //   {
-  //     original: 'https://farm6.staticflickr.com/5591/15008867125_b61960af01_h.jpg',
-  //     thumbnail: 'https://farm6.staticflickr.com/5591/15008867125_68a8ed88cc_m.jpg',
-  //     width: 1600,
-  //     height: 1068,
-  //     alt: 'Photo of mountain lake by Samuel Rohl',
-  //   },
-  //   {
-  //     original: 'https://farm6.staticflickr.com/5591/15008867125_b61960af01_h.jpg',
-  //     thumbnail: 'https://farm6.staticflickr.com/5591/15008867125_68a8ed88cc_m.jpg',
-  //     width: 1600,
-  //     height: 1068,
-  //     alt: 'Photo of mountain lake by Samuel Rohl',
-  //   },
-  //   {
-  //     original: 'https://farm6.staticflickr.com/5591/15008867125_b61960af01_h.jpg',
-  //     thumbnail: 'https://farm6.staticflickr.com/5591/15008867125_68a8ed88cc_m.jpg',
-  //     width: 1600,
-  //     height: 1068,
-  //     alt: 'Photo of mountain lake by Samuel Rohl',
-  //   },
-  //   {
-  //     original: 'https://farm6.staticflickr.com/5591/15008867125_b61960af01_h.jpg',
-  //     thumbnail: 'https://farm6.staticflickr.com/5591/15008867125_68a8ed88cc_m.jpg',
-  //     width: 1600,
-  //     height: 1068,
-  //     alt: 'Photo of mountain lake by Samuel Rohl',
-  //   },
-  // ]
-
+const ImageGallery: React.FC<GalleryProps> = ({ images }) => {
+  console.log('images in ImageGallery: ', images)
   return (
     <Gallery>
       <div className="flex w-full flex-row flex-wrap gap-2">
-        {testImages.map((image, index) => (
+        {images.map((image, index) => (
           <GalleryImageItem
             key={index}
             original_src={image.original_src}

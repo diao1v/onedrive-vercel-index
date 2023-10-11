@@ -383,9 +383,9 @@ const FileListing: FC<{ query?: ParsedUrlQuery }> = ({ query }) => {
         let imageHeight = child.image?.height || 600
         let imageWidth = child.image?.width || 900
 
-        if (imageHeight > 900) {
-          imageHeight = 900
-          imageWidth = imageWidth * (900 / imageHeight)
+        if (imageWidth > 900) {
+          imageWidth = 900
+          imageHeight = imageHeight * (900 / imageWidth)
         }
 
         const imageItem: GalleryImageItem = {
