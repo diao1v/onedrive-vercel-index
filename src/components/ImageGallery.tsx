@@ -35,7 +35,10 @@ type GalleryProps = {
   images: GalleryImageItem[]
 }
 
-const ImageGallery: React.FC = () => {
+const ImageGallery: React.FC<GalleryProps> = ({ images: testImages }) => {
+  
+  console.log('testImages: ', testImages)
+
   const images: ImageItem[] = [
     {
       original: 'https://farm6.staticflickr.com/5591/15008867125_b61960af01_h.jpg',

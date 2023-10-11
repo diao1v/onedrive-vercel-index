@@ -1,4 +1,4 @@
-import type { OdFileObject, OdFolderChildren, OdFolderObject } from '../types'
+import type { GalleryImageItem, OdFileObject, OdFolderChildren, OdFolderObject } from '../types'
 import { ParsedUrlQuery } from 'querystring'
 import { FC, MouseEventHandler, SetStateAction, useEffect, useRef, useState } from 'react'
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome'
@@ -170,7 +170,7 @@ const FileListing: FC<{ query?: ParsedUrlQuery }> = ({ query }) => {
   const path = queryToPath(query)
 
   console.info(`path in fileListing: ${path}`)
-  const { data, error, size, setSize } = useProtectedSWRInfinite(path)
+  const { data, error, size, setSize, isLoading: isFilesDataLoading } = useProtectedSWRInfinite(path)
 
   let flagDisableDownload: boolean
   let flagGalleryView: boolean
@@ -183,10 +183,13 @@ const FileListing: FC<{ query?: ParsedUrlQuery }> = ({ query }) => {
   flagGalleryView = globalFlagGalleryView
 
   const settingFilePath = `${path === '/' ? '' : path}/settings.json`
-  const { response: folderSettings } = useFileContent(`/api/raw/?path=${settingFilePath}`, settingFilePath)
+  const { response: folderSettingsData, validating: isFolderSettingsDataLoading } = useFileContent(
+    `/api/raw/?path=${settingFilePath}`,
+    settingFilePath
+  )
 
-  if (folderSettings) {
-    const folderSettingsJson = JSON.parse(folderSettings) as FeatureFlags
+  if (folderSettingsData) {
+    const folderSettingsJson = JSON.parse(folderSettingsData) as FeatureFlags
     const { flagDisableDownload: remoteFlagDisableDownload, flagGalleryView: remoteFlagGalleryView } =
       folderSettingsJson
 
@@ -211,7 +214,7 @@ const FileListing: FC<{ query?: ParsedUrlQuery }> = ({ query }) => {
       </PreviewContainer>
     )
   }
-  if (!data) {
+  if (isFilesDataLoading || isFolderSettingsDataLoading) {
     return (
       <PreviewContainer>
         <Loading loadingText={t('Loading ...')} />
@@ -375,8 +378,28 @@ const FileListing: FC<{ query?: ParsedUrlQuery }> = ({ query }) => {
       flagGalleryView,
     }
 
+    const folderImages = folderChildren.reduce((acc: GalleryImageItem[], child: OdFolderChildren) => {
+      if (child.file?.mimeType.includes('image')) {
+        const encodeImageName = encodeURIComponent(child.name)
+        const imageItem: GalleryImageItem = {
+          id: child.id,
+          original_src: `/api/raw/?path=${path}/${encodeImageName}${hashedToken ? `&odpt=${hashedToken}` : ''}`,
+          thumbnail_src: `/api/thumbnail/?path=${path}/${encodeImageName}&size=medium${
+            hashedToken ? `&odpt=${hashedToken}` : ''
+          }`,
+          width: child.image?.width || 900,
+          height: child.image?.height || 600,
+          alt: child.name,
+        }
+
+        acc.push(imageItem) // Push the imageItem to the accumulator
+      }
+
+      return acc
+    }, [])
+
     if (flagGalleryView) {
-      return <ImageGallery />
+      return <ImageGallery images={folderImages} />
     }
 
     return (

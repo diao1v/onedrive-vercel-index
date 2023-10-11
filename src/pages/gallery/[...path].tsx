@@ -11,17 +11,15 @@ import { useProtectedSWRInfinite } from '../../utils/fetchWithSWR'
 import { OdFolderChildren, OdFolderObject, GalleryImageItem } from '../../types'
 import { getStoredToken } from '../../utils/protectedRouteHandler'
 
-
 export default function Gallery() {
+  const { asPath } = useRouter()
+  const galleryRouteRegex = /\/gallery\/(.*)/
 
-  const { asPath } = useRouter();
-  const galleryRouteRegex = /\/gallery\/(.*)/;
-
-  const match = asPath.match(galleryRouteRegex);
+  const match = asPath.match(galleryRouteRegex)
   let protectedFolderPath = ''
   let endDirFolderPath = ''
-  if (match) { 
-    endDirFolderPath = match[1];
+  if (match) {
+    endDirFolderPath = match[1]
     protectedFolderPath = endDirFolderPath.split('/')[0]
   }
 
@@ -31,35 +29,34 @@ export default function Gallery() {
   const hashedToken = getStoredToken(`/${endDirFolderPath}`)
   console.log('hashedToken in gallery: ', hashedToken)
 
-
   const { data, error } = useProtectedSWRInfinite(`/${endDirFolderPath}`)
 
   const responses: any[] = data ? [].concat(...data) : []
-    // Expand list of API returns into flattened file data
+  // Expand list of API returns into flattened file data
   const folderChildren = [].concat(...responses.map(r => r.folder.value)) as OdFolderObject['value']
 
   const imageGallery = (folderChildren || []).reduce((acc: GalleryImageItem[], child: OdFolderChildren) => {
-    
     if (child.file?.mimeType.includes('image')) {
-      const encodeImageName = encodeURIComponent(child.name);
+      const encodeImageName = encodeURIComponent(child.name)
       const imageItem: GalleryImageItem = {
-        index: 1,
         id: child.id,
-        src: `/api/raw/?path=${protectedFolderPath}/${encodeImageName}${hashedToken ? `&odpt=${hashedToken}` : ''}`,
-        size: {
-          width: child.image?.width || 0,
-          height: child.image?.height || 0,
-        }
-      };
-  
-      acc.push(imageItem); // Push the imageItem to the accumulator
+        original_src: `/api/raw/?path=${protectedFolderPath}/${encodeImageName}${
+          hashedToken ? `&odpt=${hashedToken}` : ''
+        }`,
+        thumbnail_src: `/api/raw/?path=${protectedFolderPath}/${encodeImageName}${
+          hashedToken ? `&odpt=${hashedToken}` : ''
+        }`,
+        width: child.image?.width || 900,
+        height: child.image?.height || 600,
+      }
+
+      acc.push(imageItem) // Push the imageItem to the accumulator
     }
-  
-    return acc;
-  }, []);
+
+    return acc
+  }, [])
 
   console.log('imageGallery: ', imageGallery)
-
 
   return (
     <div className="flex min-h-screen flex-col items-center justify-center bg-white dark:bg-gray-900">
@@ -70,8 +67,7 @@ export default function Gallery() {
       <main className="flex w-full flex-1 flex-col bg-gray-50 dark:bg-gray-800">
         <Navbar />
         <div className="mx-auto w-full max-w-5xl py-4 sm:p-4">
-          <ImageGallery />
-          { `gallery view`}
+          {`gallery view`}
         </div>
       </main>
 

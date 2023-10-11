@@ -72,11 +72,10 @@ export type OdDriveItem = {
 }
 
 export type GalleryImageItem = {
-  index: number
-  id: string
-  src: string
-  size: {
-    width: number
-    height: number
-  }
+  id:string
+  original_src: string
+  thumbnail_src: string
+  width: number
+  height: number
+  alt?: string
 }
