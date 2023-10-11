@@ -1,7 +1,4 @@
 import '@fortawesome/fontawesome-svg-core/styles.css'
-import '@mantine/carousel/styles.css';
-import '@mantine/core/styles.css';
-
 
 import '../styles/globals.css'
 import '../styles/markdown-github.css'
