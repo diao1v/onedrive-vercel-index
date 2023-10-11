@@ -35,7 +35,7 @@ export function compareHashedToken({
  */
 
 export function matchProtectedRoute(route: string): string {
-  console.log('route in matchProtectedRoute: ', route)
+  // console.log('route in matchProtectedRoute: ', route)
   const protectedRoutes: string[] = siteConfig.protectedRoutes
   let authTokenPath = ''
 
@@ -56,6 +56,5 @@ export function matchProtectedRoute(route: string): string {
     }
   }
 
-  console.log('authTokenPath in matchProtectedRoute: ', authTokenPath)
   return authTokenPath
 }

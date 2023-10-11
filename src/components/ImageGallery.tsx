@@ -92,7 +92,7 @@ type GalleryProps = {
 }
 
 const ImageGallery: React.FC<GalleryProps> = ({ images }) => {
-  console.log('images in ImageGallery: ', images)
+  // console.log('images in ImageGallery: ', images)
   return (
     <Gallery>
       <div className="flex w-full flex-row flex-wrap gap-2">
