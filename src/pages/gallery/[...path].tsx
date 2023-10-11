@@ -5,6 +5,7 @@ import { serverSideTranslations } from 'next-i18next/serverSideTranslations'
 import siteConfig from '../../../config/site.config'
 import Navbar from '../../components/Navbar'
 import Footer from '../../components/Footer'
+import ImageGallery from '../../components/ImageGallery'
 
 import { useProtectedSWRInfinite } from '../../utils/fetchWithSWR'
 import { OdFolderChildren, OdFolderObject, GalleryImageItem } from '../../types'
@@ -12,38 +13,50 @@ import { getStoredToken } from '../../utils/protectedRouteHandler'
 
 
 export default function Gallery() {
-  const { query, asPath} = useRouter();
-  const { path } = query;
-  const hashedToken = getStoredToken(asPath)
 
-  console.log('asPath in gallery: ', asPath)
-  console.log('hashedToken: ', hashedToken)
+  const { asPath } = useRouter();
+  const galleryRouteRegex = /\/gallery\/(.*)/;
 
-  
-  const folderPath = Array.isArray(path) && path.length > 1 ? '/' + path.slice(2).join('/') : '';
+  const match = asPath.match(galleryRouteRegex);
+  let protectedFolderPath = ''
+  let endDirFolderPath = ''
+  if (match) { 
+    endDirFolderPath = match[1];
+    protectedFolderPath = endDirFolderPath.split('/')[0]
+  }
 
-  const encodeFolderPath = encodeURIComponent(folderPath)
-  const { data, error } = useProtectedSWRInfinite(`/${encodeFolderPath}`)
+  console.log('protectedFolderPath in gallery: ', protectedFolderPath)
+  console.log('endDirFolderPath in gallery: ', endDirFolderPath)
+
+  const hashedToken = getStoredToken(`/${endDirFolderPath}`)
+  console.log('hashedToken in gallery: ', hashedToken)
+
+
+  const { data, error } = useProtectedSWRInfinite(`/${endDirFolderPath}`)
 
   const responses: any[] = data ? [].concat(...data) : []
     // Expand list of API returns into flattened file data
   const folderChildren = [].concat(...responses.map(r => r.folder.value)) as OdFolderObject['value']
 
-  const imageGallery = folderChildren.map((child: OdFolderChildren) => { 
-    const encodeImageName = encodeURIComponent(child.name)
+  const imageGallery = (folderChildren || []).reduce((acc: GalleryImageItem[], child: OdFolderChildren) => {
+    
     if (child.file?.mimeType.includes('image')) {
+      const encodeImageName = encodeURIComponent(child.name);
       const imageItem: GalleryImageItem = {
-        index:1,
+        index: 1,
         id: child.id,
-        src: `/api/raw/?path=${encodeFolderPath}/${encodeImageName}${hashedToken ? `&odpt=${hashedToken}` : ''}`,
+        src: `/api/raw/?path=${protectedFolderPath}/${encodeImageName}${hashedToken ? `&odpt=${hashedToken}` : ''}`,
         size: {
           width: child.image?.width || 0,
           height: child.image?.height || 0,
         }
-      }
-      return imageItem
-      }
-  })
+      };
+  
+      acc.push(imageItem); // Push the imageItem to the accumulator
+    }
+  
+    return acc;
+  }, []);
 
   console.log('imageGallery: ', imageGallery)
 
@@ -57,7 +70,8 @@ export default function Gallery() {
       <main className="flex w-full flex-1 flex-col bg-gray-50 dark:bg-gray-800">
         <Navbar />
         <div className="mx-auto w-full max-w-5xl py-4 sm:p-4">
-          {`This will be the gallery view`}
+          <ImageGallery images={imageGallery}/>
+          { `gallery view`}
         </div>
       </main>
 

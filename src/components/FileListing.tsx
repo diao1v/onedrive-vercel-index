@@ -181,7 +181,7 @@ const FileListing: FC<{ query?: ParsedUrlQuery }> = ({ query }) => {
   flagDisableDownload = globalFlagDisableDownload
   flagGalleryView = globalFlagGalleryView
 
-  const settingFilePath = `${path}/settings.json`
+  const settingFilePath = `${path === '/' ? '' : path}/settings.json`
   const { response: folderSettings } = useFileContent(`/api/raw/?path=${settingFilePath}`, settingFilePath)
 
   if (folderSettings) {

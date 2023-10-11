@@ -78,7 +78,7 @@ const FolderGridLayout = ({
   // Get item path from item name
   const getItemPath = (name: string, isGalleryView?: boolean) => {
     return isGalleryView
-      ? `gallery/${path === '/' ? '' : path}`
+      ? `gallery${path === '/' ? '/' : path}`
       : `${path === '/' ? '' : path}/${encodeURIComponent(name)}`
   }
 
@@ -205,7 +205,7 @@ const FolderGridLayout = ({
               </>
             )}
             <Link href={getItemPath(c.name, flagGalleryView)} passHref>
-              <GridItem c={c} path={getItemPath(c.name, flagGalleryView)} />
+              <GridItem c={c} path={getItemPath(c.name, false)} />
             </Link>
           </div>
         ))}
