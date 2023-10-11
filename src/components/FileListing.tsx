@@ -374,20 +374,28 @@ const FileListing: FC<{ query?: ParsedUrlQuery }> = ({ query }) => {
       folderGenerating,
       handleSelectedPermalink,
       handleFolderDownload,
-      flagDisableDownload
+      flagDisableDownload,
     }
 
     const folderImages = folderChildren.reduce((acc: GalleryImageItem[], child: OdFolderChildren) => {
       if (child.file?.mimeType.includes('image')) {
         const encodeImageName = encodeURIComponent(child.name)
+        let imageHeight = child.image?.height || 600
+        let imageWidth = child.image?.width || 900
+
+        if (imageHeight > 900) {
+          imageHeight = 900
+          imageWidth = imageWidth * (900 / imageHeight)
+        }
+
         const imageItem: GalleryImageItem = {
           id: child.id,
           original_src: `/api/raw/?path=${path}/${encodeImageName}${hashedToken ? `&odpt=${hashedToken}` : ''}`,
           thumbnail_src: `/api/thumbnail/?path=${path}/${encodeImageName}&size=medium${
             hashedToken ? `&odpt=${hashedToken}` : ''
           }`,
-          width: child.image?.width || 900,
-          height: child.image?.height || 600,
+          width: imageWidth,
+          height: imageHeight,
           alt: child.name,
         }
 
