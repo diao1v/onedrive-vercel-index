@@ -1,12 +1,16 @@
 export const dynamicBlurDataUrl = async (url: string) => {
   const baseURL = process.env.NODE_ENV === 'development' ? 'http://localhost:3000' : window.location.origin
 
-  console.log('baseURL in dynamicBlurDataUrl: ', baseURL)
-  console.log('url in dynamicBlurDataUrl: ', url)
+  const encodedUrl = encodeURIComponent(url)
 
-  const base64str = await fetch(`${baseURL}/_next/image?url=${url}&w=256&q=40`).then(async res =>
-    Buffer.from(await res.arrayBuffer()).toString('base64')
-  )
+  console.log('baseURL in dynamicBlurDataUrl: ', baseURL)
+  console.log('url in dynamicBlurDataUrl: ', encodedUrl)
+
+  const blurImageUrl = `${baseURL}/_next/image?url=${encodedUrl}&w=256&q=40`
+
+  console.log('blurImageUrl in dynamicBlurDataUrl: ', blurImageUrl)
+
+  const base64str = await fetch(blurImageUrl).then(async res => Buffer.from(await res.arrayBuffer()).toString('base64'))
 
   const blurSvg = `
     <svg xmlns="http://www.w3.org/2000/svg" viewBox='0 0 8 5'>
