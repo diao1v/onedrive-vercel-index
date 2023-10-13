@@ -1,5 +1,6 @@
 import Image, { StaticImageData } from 'next/image'
 import { RenderSlideProps, isImageFitCover, useLightboxProps, isImageSlide, Slide } from 'yet-another-react-lightbox'
+import { singleColorDataUrl } from '../../../utils/dynamicBlurDataUrl'
 
 function isNextJsImage(slide: Slide): slide is StaticImageData {
   return isImageSlide(slide) && typeof slide.width === 'number' && typeof slide.height === 'number'
@@ -15,6 +16,8 @@ export default function LightboxNextJsImage({ slide, rect }: Pick<RenderSlidePro
 
   const height = !cover ? Math.round(Math.min(rect.height, (rect.width / slide.width) * slide.height)) : rect.height
 
+  const singleColorBlurData = singleColorDataUrl('dark')
+
   return (
     <div className="flex items-center justify-center" style={{ position: 'relative', width, height }}>
       <Image
@@ -23,10 +26,11 @@ export default function LightboxNextJsImage({ slide, rect }: Pick<RenderSlidePro
         src={slide}
         loading="eager"
         draggable={false}
-        placeholder={slide.blurDataURL ? 'blur' : undefined}
         style={{ objectFit: cover ? 'cover' : 'contain' }}
         // sizes={`${Math.ceil((width / window.innerWidth) * 100)}vw`}
         sizes="80vh"
+        placeholder="blur"
+        blurDataURL={singleColorBlurData}
       />
     </div>
   )
