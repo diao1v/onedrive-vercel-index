@@ -10,6 +10,10 @@ export default function AlbumNextJsImage({
 }: RenderPhotoProps) {
   const singleColorBlurData = singleColorDataUrl()
 
+  const loaderProp =({ src }) => {
+    return src;
+}
+
   return (
     <div style={{ ...wrapperStyle, position: 'relative' }}>
       <Image
@@ -20,6 +24,7 @@ export default function AlbumNextJsImage({
         {...{ alt, title, className, onClick }}
         quality={75}
         sizes="25vh"
+        loader={loaderProp}
       />
     </div>
   )
