@@ -1,5 +1,4 @@
 import type { OdFileObject, OdFolderChildren, OdFolderObject } from '../types'
-import type { GalleryImageItem } from '../types/types'
 import { ParsedUrlQuery } from 'querystring'
 import { FC, MouseEventHandler, SetStateAction, useEffect, useRef, useState } from 'react'
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome'
@@ -189,6 +188,18 @@ const FileListing: FC<{ query?: ParsedUrlQuery }> = ({ query }) => {
     `/api/raw/?path=${settingFilePath}`,
     settingFilePath
   )
+
+  useEffect(() => {
+    const { FEATURE_FLAGS: {
+      flagDisableDownload: localFlagDisableDownload,
+      flagGalleryView: localFlagGalleryView
+    } } = featureFlags
+
+    setFlagDisableDownload(localFlagDisableDownload)
+    setFlagGalleryView(localFlagGalleryView)
+  }
+  , [query])
+
 
   useEffect(() => {
     if (folderSettingsData) {
