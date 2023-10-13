@@ -209,7 +209,7 @@ const FileListing: FC<{ query?: ParsedUrlQuery }> = ({ query }) => {
       setFlagGalleryView(remoteFlagGalleryView)
     }
   }
-  , [folderSettingsData])
+  , [folderSettingsData,query])
 
   if (isDev) {
     // leave for local development
