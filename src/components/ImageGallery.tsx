@@ -3,11 +3,11 @@ import Image from 'next/image'
 import 'photoswipe/dist/photoswipe.css'
 import { Gallery, Item } from 'react-photoswipe-gallery'
 
-import type { GalleryImageItem } from '../types'
+import type { GalleryImageItem } from '../types/types'
 import { featureFlags } from '../utils'
 import { dynamicBlurDataUrl } from '../utils/dynamicBlurDataUrl'
 
-const GalleryImageItem: React.FC<GalleryImageItem> = ({ original_src, thumbnail_src, width, height, alt }) => {
+const GalleryImageItem: React.FC<GalleryImageItem> = ({ src, thumbnail_src = 'place holder', width, height, alt }) => {
   const [blurData, setBlurData] = useState(
     `data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAAAEAAAABCAYAAAAfFcSJAAAADUlEQVR42mP09vZhAgACsQDmXwe6IgAAAABJRU5ErkJggg==`
   )
@@ -33,7 +33,7 @@ const GalleryImageItem: React.FC<GalleryImageItem> = ({ original_src, thumbnail_
         content={
           <div className="flex h-full items-center justify-center">
             <Image
-              src={original_src}
+              src={src}
               width={width}
               height={height}
               sizes="90vh"
@@ -69,7 +69,7 @@ const GalleryImageItem: React.FC<GalleryImageItem> = ({ original_src, thumbnail_
   }
 
   return (
-    <Item original={original_src} thumbnail={thumbnail_src} width={width} height={height} alt={alt}>
+    <Item original={src} thumbnail={thumbnail_src} width={width} height={height} alt={alt}>
       {({ ref, open }) => (
         <Image
           className="relative h-40 w-52 cursor-pointer object-cover"
@@ -97,7 +97,7 @@ const ImageGallery: React.FC<GalleryProps> = ({ images }) => {
         {images.map((image, index) => (
           <GalleryImageItem
             key={index}
-            original_src={image.original_src}
+            src={image.src}
             thumbnail_src={image.thumbnail_src}
             width={image.width}
             height={image.height}

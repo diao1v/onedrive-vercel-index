@@ -1,4 +1,5 @@
-import type { GalleryImageItem, OdFileObject, OdFolderChildren, OdFolderObject } from '../types'
+import type { OdFileObject, OdFolderChildren, OdFolderObject } from '../types'
+import type { GalleryImageItem } from '../types/types'
 import { ParsedUrlQuery } from 'querystring'
 import { FC, MouseEventHandler, SetStateAction, useEffect, useRef, useState } from 'react'
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome'
@@ -46,7 +47,10 @@ import useFileContent from '../utils/fetchOnMount'
 import ImageGallery from './ImageGallery'
 
 import imagesMock from '../mocks/imagesMock.json'
+import imageSimplerMock from '../mocks/imagesMockSimple.json'
+import { Photo } from 'react-photo-album'
 import { resizeImage } from '../utils/getImageFiles'
+import Gallery from './gallery'
 
 // Disabling SSR for some previews
 const EPUBPreview = dynamic(() => import('./previews/EPUBPreview'), {
@@ -205,24 +209,38 @@ const FileListing: FC<{ query?: ParsedUrlQuery }> = ({ query }) => {
     // leave for local development
 
     //update the image size
-    const images = imagesMock.map(image => {
+    // const images = imagesMock.map(image => {
+    //   const originalImageHeight = image.height
+    //   const originalImageWidth = image.width
+
+    //   const { width: adjustedWidth, height: adjustedHeight } = resizeImage(originalImageWidth, originalImageHeight)
+
+    //   const imageItem = {
+    //     src: image.original_src,
+    //     width: adjustedWidth,
+    //     height: adjustedHeight,
+    //   }
+
+    //   return imageItem
+    // })
+
+    const simplerImages = imageSimplerMock.map(image => {
       const originalImageHeight = image.height
       const originalImageWidth = image.width
 
       const { width: adjustedWidth, height: adjustedHeight } = resizeImage(originalImageWidth, originalImageHeight)
 
-      const imageItem: GalleryImageItem = {
-        id: image.id,
-        original_src: image.original_src,
-        thumbnail_src: image.thumbnail_src,
+      const imageItem = {
+        src: image.src,
         width: adjustedWidth,
         height: adjustedHeight,
-        alt: image.alt,
       }
 
       return imageItem
     })
-    return <ImageGallery images={images} />
+
+    // return <ImageGallery images={images} />
+    return <Gallery  images={simplerImages}/>
   }
 
   if (error) {
@@ -413,7 +431,7 @@ const FileListing: FC<{ query?: ParsedUrlQuery }> = ({ query }) => {
 
         const imageItem: GalleryImageItem = {
           id: child.id,
-          original_src: `/api/raw/?path=${path}/${encodeImageName}${hashedToken ? `&odpt=${hashedToken}` : ''}`,
+          src: `/api/raw/?path=${path}/${encodeImageName}${hashedToken ? `&odpt=${hashedToken}` : ''}`,
           thumbnail_src: `/api/thumbnail/?path=${path}/${encodeImageName}&size=medium${
             hashedToken ? `&odpt=${hashedToken}` : ''
           }`,
