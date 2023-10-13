@@ -166,6 +166,8 @@ const FileListing: FC<{ query?: ParsedUrlQuery }> = ({ query }) => {
   const [folderGenerating, setFolderGenerating] = useState<{
     [key: string]: boolean
   }>({})
+  const [flagDisableDownload, setFlagDisableDownload] = useState<boolean>(false)
+  const [flagGalleryView, setFlagGalleryView] = useState<boolean>(false)
 
   const router = useRouter()
   const hashedToken = getStoredToken(router.asPath)
@@ -177,17 +179,8 @@ const FileListing: FC<{ query?: ParsedUrlQuery }> = ({ query }) => {
 
   // console.info(`path in fileListing: ${path}`)
 
-  const { data, error, size, setSize, isLoading: isFilesDataLoading } = useProtectedSWRInfinite(path)
+  const { data, error, size, setSize, isLoading: isFilesDataLoading, isValidating: isFilesDataValidating } = useProtectedSWRInfinite(path)
 
-  let flagDisableDownload: boolean
-  let flagGalleryView: boolean
-
-  const {
-    FEATURE_FLAGS: { flagDisableDownload: globalFlagDisableDownload, flagGalleryView: globalFlagGalleryView },
-  } = featureFlags
-
-  flagDisableDownload = globalFlagDisableDownload
-  flagGalleryView = globalFlagGalleryView
 
   const settingFilePath = `${path === '/' ? '' : path}/settings.json`
   const { response: folderSettingsData, validating: isFolderSettingsDataLoading } = useFileContent(
@@ -195,14 +188,17 @@ const FileListing: FC<{ query?: ParsedUrlQuery }> = ({ query }) => {
     settingFilePath
   )
 
-  if (folderSettingsData) {
-    const folderSettingsJson = JSON.parse(folderSettingsData) as FeatureFlags
-    const { flagDisableDownload: remoteFlagDisableDownload, flagGalleryView: remoteFlagGalleryView } =
-      folderSettingsJson
+  useEffect(() => {
+    if (folderSettingsData) {
+      const folderSettingsJson = JSON.parse(folderSettingsData) as FeatureFlags
+      const { flagDisableDownload: remoteFlagDisableDownload, flagGalleryView: remoteFlagGalleryView } =
+        folderSettingsJson
 
-    flagDisableDownload = remoteFlagDisableDownload ?? flagDisableDownload
-    flagGalleryView = remoteFlagGalleryView ?? flagGalleryView
+      setFlagDisableDownload(remoteFlagDisableDownload)
+      setFlagGalleryView(remoteFlagGalleryView)
+    }
   }
+  , [folderSettingsData])
 
   if (isDev) {
     // leave for local development
@@ -240,7 +236,7 @@ const FileListing: FC<{ query?: ParsedUrlQuery }> = ({ query }) => {
     )
   }
 
-  if (isFilesDataLoading || isFolderSettingsDataLoading || !data) {
+  if (isFilesDataLoading || isFolderSettingsDataLoading || !data || isFilesDataValidating) {
     return (
       <PreviewContainer>
         <Loading loadingText={t('Loading ...')} />
