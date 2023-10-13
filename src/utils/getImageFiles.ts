@@ -1,5 +1,3 @@
-import { OdFolderChildren, GalleryImageItem } from "../types"
-
 export const resizeImage = (originalWidth: number, originalHeight: number): {width: number, height:number} => {
   const maxWidth = 1024
   const maxHeight = 800

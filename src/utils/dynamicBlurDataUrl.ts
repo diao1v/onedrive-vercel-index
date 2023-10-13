@@ -21,3 +21,20 @@ export const dynamicBlurDataUrl = async (url: string) => {
 
   return `data:image/svg+xml;base64,${toBase64(blurSvg)}`
 }
+
+const getSystemTheme = () => {
+  if (typeof window === 'undefined') return 'light'
+  return window.matchMedia('(prefers-color-scheme: dark)').matches ? 'dark' : 'light'
+}
+
+export const singleColorDataUrl = (theme?: string) => {
+  if (!theme) {
+    theme = getSystemTheme()
+  }
+
+  const darkThemeBlurDataUrl =
+    'data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAAAEAAAABCAYAAAAfFcSJAAAADUlEQVR42mOU0zG+BgACQgFVDA4Y1AAAAABJRU5ErkJggg=='
+  const lightThemeBlurDataUrl =
+    'data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAAAEAAAABCAQAAAC1HAwCAAAAC0lEQVR42mP8cA0AArwByBfOWdkAAAAASUVORK5CYII='
+  return theme === 'dark' ? darkThemeBlurDataUrl : lightThemeBlurDataUrl
+}
