@@ -223,7 +223,7 @@ const FileListing: FC<{ query?: ParsedUrlQuery }> = ({ query }) => {
     })
 
     // return <ImageGallery images={images} />
-    return <Gallery  images={simplerImages}/>
+    return <Gallery images={simplerImages} />
   }
 
   if (error) {
@@ -526,7 +526,14 @@ const FileListing: FC<{ query?: ParsedUrlQuery }> = ({ query }) => {
 
   return (
     <PreviewContainer>
-      <FourOhFour errorMsg={t('Cannot preview {{path}}', { path })} />
+      {/* <FourOhFour errorMsg={t('Cannot preview {{path}}', { path })} /> */}
+      <Loading loadingText={t('Loading ...')} />
+      <button
+        onClick={() => window.location.reload()}
+        className="rounded bg-gray-600 px-4 py-2 text-white hover:bg-gray-500 focus:outline-none"
+      >
+        Refresh the page
+      </button>
     </PreviewContainer>
   )
 }
