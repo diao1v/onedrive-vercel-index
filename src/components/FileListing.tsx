@@ -446,8 +446,27 @@ const FileListing: FC<{ query?: ParsedUrlQuery }> = ({ query }) => {
       return acc
     }, [])
 
+    const folderImages2 = folderChildren.reduce((acc: Photo[], child: OdFolderChildren) => {
+      if (child.file?.mimeType.includes('image')) {
+        const encodeImageName = encodeURIComponent(child.name)
+        const originalImageHeight = child.image!.height!
+        const originalImageWidth = child.image!.width!
+
+        const { width: adjustedWidth, height: adjustedHeight } = resizeImage(originalImageWidth, originalImageHeight)
+
+        const imageItem: Photo = {
+          src: `/api/raw/?path=${path}/${encodeImageName}${hashedToken ? `&odpt=${hashedToken}` : ''}`,
+          width: adjustedWidth,
+          height: adjustedHeight,
+        }
+
+        acc.push(imageItem) // Push the imageItem to the accumulator
+      }
+      return acc
+    }, [])
+
     if (flagGalleryView) {
-      return <ImageGallery images={folderImages} />
+      return <Gallery images={folderImages2} />
     }
 
     return (
