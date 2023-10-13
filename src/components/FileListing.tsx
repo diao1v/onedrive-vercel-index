@@ -1,5 +1,4 @@
 import type { OdFileObject, OdFolderChildren, OdFolderObject } from '../types'
-import type { GalleryImageItem } from '../types/types'
 import { ParsedUrlQuery } from 'querystring'
 import { FC, MouseEventHandler, SetStateAction, useEffect, useRef, useState } from 'react'
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome'
@@ -166,6 +165,8 @@ const FileListing: FC<{ query?: ParsedUrlQuery }> = ({ query }) => {
   const [folderGenerating, setFolderGenerating] = useState<{
     [key: string]: boolean
   }>({})
+  const [flagDisableDownload, setFlagDisableDownload] = useState<boolean>(true)
+  const [flagGalleryView, setFlagGalleryView] = useState<boolean>(false)
 
   const router = useRouter()
   const hashedToken = getStoredToken(router.asPath)
@@ -177,17 +178,8 @@ const FileListing: FC<{ query?: ParsedUrlQuery }> = ({ query }) => {
 
   // console.info(`path in fileListing: ${path}`)
 
-  const { data, error, size, setSize, isLoading: isFilesDataLoading } = useProtectedSWRInfinite(path)
+  const { data, error, size, setSize, isLoading: isFilesDataLoading, isValidating: isFilesDataValidating } = useProtectedSWRInfinite(path)
 
-  let flagDisableDownload: boolean
-  let flagGalleryView: boolean
-
-  const {
-    FEATURE_FLAGS: { flagDisableDownload: globalFlagDisableDownload, flagGalleryView: globalFlagGalleryView },
-  } = featureFlags
-
-  flagDisableDownload = globalFlagDisableDownload
-  flagGalleryView = globalFlagGalleryView
 
   const settingFilePath = `${path === '/' ? '' : path}/settings.json`
   const { response: folderSettingsData, validating: isFolderSettingsDataLoading } = useFileContent(
@@ -195,14 +187,29 @@ const FileListing: FC<{ query?: ParsedUrlQuery }> = ({ query }) => {
     settingFilePath
   )
 
-  if (folderSettingsData) {
-    const folderSettingsJson = JSON.parse(folderSettingsData) as FeatureFlags
-    const { flagDisableDownload: remoteFlagDisableDownload, flagGalleryView: remoteFlagGalleryView } =
-      folderSettingsJson
+  useEffect(() => {
+    const { FEATURE_FLAGS: {
+      flagDisableDownload: localFlagDisableDownload,
+      flagGalleryView: localFlagGalleryView
+    } } = featureFlags
 
-    flagDisableDownload = remoteFlagDisableDownload ?? flagDisableDownload
-    flagGalleryView = remoteFlagGalleryView ?? flagGalleryView
+    setFlagDisableDownload(localFlagDisableDownload)
+    setFlagGalleryView(localFlagGalleryView)
   }
+  , [query])
+
+
+  useEffect(() => {
+    if (folderSettingsData) {
+      const folderSettingsJson = JSON.parse(folderSettingsData) as FeatureFlags
+      const { flagDisableDownload: remoteFlagDisableDownload, flagGalleryView: remoteFlagGalleryView } =
+        folderSettingsJson
+
+      setFlagDisableDownload(remoteFlagDisableDownload)
+      setFlagGalleryView(remoteFlagGalleryView)
+    }
+  }
+  , [folderSettingsData])
 
   if (isDev) {
     // leave for local development
@@ -240,7 +247,7 @@ const FileListing: FC<{ query?: ParsedUrlQuery }> = ({ query }) => {
     )
   }
 
-  if (isFilesDataLoading || isFolderSettingsDataLoading || !data) {
+  if (isFilesDataLoading || isFolderSettingsDataLoading || !data || isFilesDataValidating) {
     return (
       <PreviewContainer>
         <Loading loadingText={t('Loading ...')} />
@@ -265,6 +272,11 @@ const FileListing: FC<{ query?: ParsedUrlQuery }> = ({ query }) => {
 
     // Filtered file list helper
     const getFiles = () => folderChildren.filter(c => !c.folder && c.name !== '.password')
+
+    const removeSettingAndPasswordFromFolderChildren = (folderChildren: OdFolderObject['value']) => {
+      return folderChildren.filter(c => c.name !== '.password' && c.name !== 'settings.json')
+    }
+
 
     // File selection
     const genTotalSelected = (selected: { [key: string]: boolean }) => {
@@ -386,11 +398,14 @@ const FileListing: FC<{ query?: ParsedUrlQuery }> = ({ query }) => {
         })
     }
 
+  
+    const updatedFolderChildren = removeSettingAndPasswordFromFolderChildren(folderChildren)
+
     // Folder layout component props
     const folderProps = {
       toast,
       path,
-      folderChildren,
+      folderChildren: updatedFolderChildren,
       selected,
       toggleItemSelected,
       totalSelected,
