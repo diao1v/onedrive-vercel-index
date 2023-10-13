@@ -262,6 +262,11 @@ const FileListing: FC<{ query?: ParsedUrlQuery }> = ({ query }) => {
     // Filtered file list helper
     const getFiles = () => folderChildren.filter(c => !c.folder && c.name !== '.password')
 
+    const removeSettingAndPasswordFromFolderChildren = (folderChildren: OdFolderObject['value']) => {
+      return folderChildren.filter(c => c.name !== '.password' && c.name !== 'settings.json')
+    }
+
+
     // File selection
     const genTotalSelected = (selected: { [key: string]: boolean }) => {
       const selectInfo = getFiles().map(c => Boolean(selected[c.id]))
@@ -382,11 +387,14 @@ const FileListing: FC<{ query?: ParsedUrlQuery }> = ({ query }) => {
         })
     }
 
+  
+    const updatedFolderChildren = removeSettingAndPasswordFromFolderChildren(folderChildren)
+
     // Folder layout component props
     const folderProps = {
       toast,
       path,
-      folderChildren,
+      folderChildren: updatedFolderChildren,
       selected,
       toggleItemSelected,
       totalSelected,
