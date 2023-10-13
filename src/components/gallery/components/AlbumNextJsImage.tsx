@@ -7,7 +7,7 @@ export default function AlbumNextJsImage({
   wrapperStyle,
 }: RenderPhotoProps) {
   const singleColorBlurData =
-    'data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAAAEAAAABCAYAAAAfFcSJAAAADUlEQVR42mPkE1G8BgABlgEbDKVxAwAAAABJRU5ErkJggg=='
+    'data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAAAEAAAABCAYAAAAfFcSJAAAADUlEQVR42mOU0zG+BgACQgFVDA4Y1AAAAABJRU5ErkJggg=='
 
   return (
     <div style={{ ...wrapperStyle, position: 'relative' }}>
@@ -17,8 +17,9 @@ export default function AlbumNextJsImage({
         // placeholder={"blurDataURL" in photo ? "blur" : undefined}
         placeholder="blur"
         blurDataURL={singleColorBlurData}
-        {...{ alt, title, sizes, className, onClick }}
-        quality={60}
+        {...{ alt, title, className, onClick }}
+        quality={75}
+        sizes='25vh'
       />
     </div>
   )

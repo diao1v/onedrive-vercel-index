@@ -4,6 +4,8 @@ import { RenderSlideProps, isImageFitCover, useLightboxProps, isImageSlide, Slid
 function isNextJsImage(slide: Slide): slide is StaticImageData {
   return isImageSlide(slide) && typeof slide.width === 'number' && typeof slide.height === 'number'
 }
+const singleColorBlurData =
+'data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAAAEAAAABCAYAAAAfFcSJAAAADUlEQVR42mOU0zG+BgACQgFVDA4Y1AAAAABJRU5ErkJggg=='
 
 export default function LightboxNextJsImage({ slide, rect }: Pick<RenderSlideProps, 'slide' | 'rect'>) {
   const { imageFit } = useLightboxProps().carousel
@@ -23,10 +25,11 @@ export default function LightboxNextJsImage({ slide, rect }: Pick<RenderSlidePro
         src={slide}
         loading="eager"
         draggable={false}
-        placeholder={slide.blurDataURL ? 'blur' : undefined}
         style={{ objectFit: cover ? 'cover' : 'contain' }}
         // sizes={`${Math.ceil((width / window.innerWidth) * 100)}vw`}
         sizes="80vh"
+        placeholder="blur"
+        blurDataURL={singleColorBlurData}
       />
     </div>
   )
