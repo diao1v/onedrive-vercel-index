@@ -168,8 +168,6 @@ const FileListing: FC<{ query?: ParsedUrlQuery }> = ({ query }) => {
   const [flagDisableDownload, setFlagDisableDownload] = useState<boolean>(true)
   const [flagGalleryView, setFlagGalleryView] = useState<boolean>(false)
 
-  console.log('flagGalleryView in FileListing: ', flagGalleryView)
-
   const router = useRouter()
   const hashedToken = getStoredToken(router.asPath)
   const [layout, _] = useLocalStorage('preferredLayout', layouts[0])
