@@ -14,7 +14,6 @@ export default function AlbumNextJsImage({
     <div style={{ ...wrapperStyle, position: 'relative' }}>
       <Image
         fill
-        unoptimized={true}
         src={photo}
         placeholder="blur"
         blurDataURL={singleColorBlurData}
