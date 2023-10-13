@@ -49,6 +49,7 @@
     "react-hotkeys-hook": "^4.3.3",
     "react-i18next": "^12.1.4",
     "react-markdown": "^8.0.5",
+    "react-photo-album": "^2.3.0",
     "react-photoswipe-gallery": "^2.2.7",
     "react-reader": "^1.0.2",
     "react-syntax-highlighter": "^15.5.0",
@@ -60,7 +61,8 @@
     "sharp": "^0.32.6",
     "swr": "^2.0.3",
     "use-clipboard-copy": "^0.2.0",
-    "use-constant": "^1.1.1"
+    "use-constant": "^1.1.1",
+    "yet-another-react-lightbox": "^3.14.0"
   },
   "devDependencies": {
     "@types/cors": "^2.8.13",

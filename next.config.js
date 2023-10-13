@@ -7,5 +7,6 @@ module.exports = {
   trailingSlash: true,
   images: {
     minimumCacheTTL: 60,
+    domains: ['source.unsplash.com'],
   },
 }
