@@ -166,7 +166,7 @@ const FileListing: FC<{ query?: ParsedUrlQuery }> = ({ query }) => {
   const [folderGenerating, setFolderGenerating] = useState<{
     [key: string]: boolean
   }>({})
-  const [flagDisableDownload, setFlagDisableDownload] = useState<boolean>(false)
+  const [flagDisableDownload, setFlagDisableDownload] = useState<boolean>(true)
   const [flagGalleryView, setFlagGalleryView] = useState<boolean>(false)
 
   const router = useRouter()
