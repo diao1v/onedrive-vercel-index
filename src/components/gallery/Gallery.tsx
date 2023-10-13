@@ -1,5 +1,5 @@
 import React, { useState } from 'react'
-import PhotoAlbum, {Photo} from 'react-photo-album'
+import PhotoAlbum, { Photo } from 'react-photo-album'
 import Lightbox from 'yet-another-react-lightbox'
 import 'yet-another-react-lightbox/styles.css'
 
@@ -16,46 +16,8 @@ type GalleryProps = {
   images: Photo[]
 }
 
-const Gallery: React.FC<GalleryProps> = ({images  }) => {
-  
-  console.log('images in Gallery: ', images)
-
-  console.log('images in Gallery: ', images)
-
-  const testImage = [
-    {
-        "src": "/local-development/1.jpeg",
-        "width": 1024,
-        "height": 692
-    },
-    {
-        "src": "/local-development/2.jpg",
-        "width": 1024,
-        "height": 683
-    },
-    {
-        "src": "/local-development/3.JPG",
-        "width": 534,
-        "height": 800
-    },
-    {
-        "src": "/local-development/4.png",
-        "width": 1024,
-        "height": 395
-    },
-    {
-        "src": "/local-development/5.png",
-        "width": 448,
-        "height": 800
-    }
-]
-
-
+const Gallery: React.FC<GalleryProps> = ({ images }) => {
   const [index, setIndex] = useState(-1)
-
-  console.log('photos', photos)
-  console.log('photo type', typeof photos)
-
   return (
     <>
       <PhotoAlbum

@@ -6,8 +6,6 @@ export default function AlbumNextJsImage({
   imageProps: { alt, title, sizes, className, onClick },
   wrapperStyle,
 }: RenderPhotoProps) {
-
-  console.log('photo in AlbumNextJsImage', photo)
   return (
     <div style={{ ...wrapperStyle, position: "relative" }}>
       <Image
