@@ -44,7 +44,6 @@ import FolderGridLayout from './FolderGridLayout'
 import { featureFlags } from '../utils'
 import type { FeatureFlags } from '../utils/featureFlags'
 import useFileContent from '../utils/fetchOnMount'
-import ImageGallery from './ImageGallery'
 
 import imagesMock from '../mocks/imagesMock.json'
 import imageSimplerMock from '../mocks/imagesMockSimple.json'
