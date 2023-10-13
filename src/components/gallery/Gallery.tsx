@@ -15,8 +15,12 @@ const Gallery: React.FC<GalleryProps> = ({ images }) => {
   return (
     <>
       <PhotoAlbum
-        layout="masonry"
-        columns={3}
+        layout="columns"
+        columns={(containerWidth) => {
+          if (containerWidth < 400) return 2;
+          if (containerWidth < 800) return 3;
+          return 4;
+        }}
         photos={images}
         renderPhoto={AlbumNextJsImage}
         defaultContainerWidth={1200}

@@ -1,13 +1,16 @@
 import Image from 'next/image'
 import type { RenderPhotoProps } from 'react-photo-album'
 
+import {singleColorDataUrl } from '../../../utils/dynamicBlurDataUrl'
+
 export default function AlbumNextJsImage({
   photo,
   imageProps: { alt, title, sizes, className, onClick },
   wrapperStyle,
 }: RenderPhotoProps) {
-  const singleColorBlurData =
-    'data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAAAEAAAABCAYAAAAfFcSJAAAADUlEQVR42mOU0zG+BgACQgFVDA4Y1AAAAABJRU5ErkJggg=='
+
+  const singleColorBlurData = singleColorDataUrl()
+
 
   return (
     <div style={{ ...wrapperStyle, position: 'relative' }}>
