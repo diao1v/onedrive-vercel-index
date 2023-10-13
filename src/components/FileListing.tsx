@@ -207,22 +207,6 @@ const FileListing: FC<{ query?: ParsedUrlQuery }> = ({ query }) => {
   if (isDev) {
     // leave for local development
 
-    //update the image size
-    // const images = imagesMock.map(image => {
-    //   const originalImageHeight = image.height
-    //   const originalImageWidth = image.width
-
-    //   const { width: adjustedWidth, height: adjustedHeight } = resizeImage(originalImageWidth, originalImageHeight)
-
-    //   const imageItem = {
-    //     src: image.original_src,
-    //     width: adjustedWidth,
-    //     height: adjustedHeight,
-    //   }
-
-    //   return imageItem
-    // })
-
     const simplerImages = imageSimplerMock.map(image => {
       const originalImageHeight = image.height
       const originalImageWidth = image.width
@@ -239,7 +223,7 @@ const FileListing: FC<{ query?: ParsedUrlQuery }> = ({ query }) => {
     })
 
     // return <ImageGallery images={images} />
-    return <Gallery  images={simplerImages}/>
+    return <Gallery images={simplerImages} />
   }
 
   if (error) {
@@ -255,7 +239,8 @@ const FileListing: FC<{ query?: ParsedUrlQuery }> = ({ query }) => {
       </PreviewContainer>
     )
   }
-  if (isFilesDataLoading || isFolderSettingsDataLoading) {
+
+  if (isFilesDataLoading || isFolderSettingsDataLoading || !data) {
     return (
       <PreviewContainer>
         <Loading loadingText={t('Loading ...')} />
@@ -420,32 +405,7 @@ const FileListing: FC<{ query?: ParsedUrlQuery }> = ({ query }) => {
 
     // console.info('folderChildren in fileListing: ', folderChildren)
 
-    const folderImages = folderChildren.reduce((acc: GalleryImageItem[], child: OdFolderChildren) => {
-      if (child.file?.mimeType.includes('image')) {
-        const encodeImageName = encodeURIComponent(child.name)
-        const originalImageHeight = child.image!.height!
-        const originalImageWidth = child.image!.width!
-
-        const { width: adjustedWidth, height: adjustedHeight } = resizeImage(originalImageWidth, originalImageHeight)
-
-        const imageItem: GalleryImageItem = {
-          id: child.id,
-          src: `/api/raw/?path=${path}/${encodeImageName}${hashedToken ? `&odpt=${hashedToken}` : ''}`,
-          thumbnail_src: `/api/thumbnail/?path=${path}/${encodeImageName}&size=medium${
-            hashedToken ? `&odpt=${hashedToken}` : ''
-          }`,
-          width: adjustedWidth,
-          height: adjustedHeight,
-          alt: child.name,
-        }
-
-        acc.push(imageItem) // Push the imageItem to the accumulator
-      }
-
-      return acc
-    }, [])
-
-    const folderImages2 = folderChildren.reduce((acc: Photo[], child: OdFolderChildren) => {
+    const folderImages = folderChildren.reduce((acc: Photo[], child: OdFolderChildren) => {
       if (child.file?.mimeType.includes('image')) {
         const encodeImageName = encodeURIComponent(child.name)
         const originalImageHeight = child.image!.height!
@@ -465,7 +425,7 @@ const FileListing: FC<{ query?: ParsedUrlQuery }> = ({ query }) => {
     }, [])
 
     if (flagGalleryView) {
-      return <Gallery images={folderImages2} />
+      return <Gallery images={folderImages} />
     }
 
     return (
@@ -566,7 +526,14 @@ const FileListing: FC<{ query?: ParsedUrlQuery }> = ({ query }) => {
 
   return (
     <PreviewContainer>
-      <FourOhFour errorMsg={t('Cannot preview {{path}}', { path })} />
+      {/* <FourOhFour errorMsg={t('Cannot preview {{path}}', { path })} /> */}
+      <Loading loadingText={t('Loading ...')} />
+      <button
+        onClick={() => window.location.reload()}
+        className="rounded bg-gray-600 px-4 py-2 text-white hover:bg-gray-500 focus:outline-none"
+      >
+        Refresh the page
+      </button>
     </PreviewContainer>
   )
 }
