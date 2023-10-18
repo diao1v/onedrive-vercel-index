@@ -14,25 +14,17 @@ const FourOhFour: React.FC<{ errorMsg: string }> = ({ errorMsg }) => {
             Oops, that's a <span className="underline decoration-red-500 decoration-wavy">four-oh-four</span>.
           </Trans>
         </div>
-        <div className="mb-4 overflow-hidden break-all rounded border border-gray-400/20 bg-gray-50 p-2 font-mono text-xs dark:bg-gray-800">
+        {/* <div className="mb-4 overflow-hidden break-all rounded border border-gray-400/20 bg-gray-50 p-2 font-mono text-xs dark:bg-gray-800">
           {errorMsg}
-        </div>
+        </div> */}
         <div className="text-sm">
           <Trans>
-            Press{' '}
-            <kbd className="rounded border border-gray-400/20 bg-gray-100 px-1 font-mono text-xs dark:bg-gray-800">
-              F12
-            </kbd>{' '}
-            and open devtools for more details, or seek help at{' '}
-            <a
-              className="text-blue-600 hover:text-blue-700 hover:underline"
-              href="https://github.com/spencerwooo/onedrive-vercel-index/discussions"
-              target="_blank"
-              rel="noopener noreferrer"
+            <button
+              onClick={() => window.location.reload()}
+              className="rounded bg-gray-600 px-4 py-2 text-white hover:bg-gray-500 focus:outline-none"
             >
-              onedrive-vercel-index discussions
-            </a>
-            .
+              Please refresh the page
+            </button>
           </Trans>
         </div>
       </div>
