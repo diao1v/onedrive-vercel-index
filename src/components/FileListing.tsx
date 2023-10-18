@@ -235,14 +235,6 @@ const FileListing: FC<{ query?: ParsedUrlQuery }> = ({ query }) => {
     return <Gallery images={simplerImages} />
   }
 
-  if (isFilesDataLoading || isFolderSettingsDataLoading || !data || isFilesDataValidating) {
-    return (
-      <PreviewContainer>
-        <Loading loadingText={t('Loading ...')} />
-      </PreviewContainer>
-    )
-  }
-
   if (error) {
     // If error includes 403 which means the user has not completed initial setup, redirect to OAuth page
     if (error.status === 403) {
@@ -253,6 +245,14 @@ const FileListing: FC<{ query?: ParsedUrlQuery }> = ({ query }) => {
     return (
       <PreviewContainer>
         {error.status === 401 ? <Auth redirect={path} /> : <FourOhFour errorMsg={JSON.stringify(error.message)} />}
+      </PreviewContainer>
+    )
+  }
+
+  if (isFilesDataLoading || isFolderSettingsDataLoading || !data || isFilesDataValidating) {
+    return (
+      <PreviewContainer>
+        <Loading loadingText={t('Loading ...')} />
       </PreviewContainer>
     )
   }
