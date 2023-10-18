@@ -49,6 +49,7 @@ module.exports = {
     '/🔐 Ayame ito',
     '/🔐 Isla and Jack',
     '/🔐 Jun and Lin',
+    '/🔐 Wawaa',
   ],
 
   // [OPTIONAL] Use "" here if you want to remove this email address from the nav bar.
