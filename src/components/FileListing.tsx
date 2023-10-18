@@ -178,8 +178,14 @@ const FileListing: FC<{ query?: ParsedUrlQuery }> = ({ query }) => {
 
   // console.info(`path in fileListing: ${path}`)
 
-  const { data, error, size, setSize, isLoading: isFilesDataLoading, isValidating: isFilesDataValidating } = useProtectedSWRInfinite(path)
-
+  const {
+    data,
+    error,
+    size,
+    setSize,
+    isLoading: isFilesDataLoading,
+    isValidating: isFilesDataValidating,
+  } = useProtectedSWRInfinite(path)
 
   const settingFilePath = `${path === '/' ? '' : path}/settings.json`
   const { response: folderSettingsData, validating: isFolderSettingsDataLoading } = useFileContent(
@@ -188,16 +194,13 @@ const FileListing: FC<{ query?: ParsedUrlQuery }> = ({ query }) => {
   )
 
   useEffect(() => {
-    const { FEATURE_FLAGS: {
-      flagDisableDownload: localFlagDisableDownload,
-      flagGalleryView: localFlagGalleryView
-    } } = featureFlags
+    const {
+      FEATURE_FLAGS: { flagDisableDownload: localFlagDisableDownload, flagGalleryView: localFlagGalleryView },
+    } = featureFlags
 
     setFlagDisableDownload(localFlagDisableDownload)
     setFlagGalleryView(localFlagGalleryView)
-  }
-  , [query])
-
+  }, [query])
 
   useEffect(() => {
     if (folderSettingsData) {
@@ -208,8 +211,7 @@ const FileListing: FC<{ query?: ParsedUrlQuery }> = ({ query }) => {
       setFlagDisableDownload(remoteFlagDisableDownload)
       setFlagGalleryView(remoteFlagGalleryView)
     }
-  }
-  , [folderSettingsData,query])
+  }, [folderSettingsData, query])
 
   if (isDev) {
     // leave for local development
@@ -233,6 +235,14 @@ const FileListing: FC<{ query?: ParsedUrlQuery }> = ({ query }) => {
     return <Gallery images={simplerImages} />
   }
 
+  if (isFilesDataLoading || isFolderSettingsDataLoading || !data || isFilesDataValidating) {
+    return (
+      <PreviewContainer>
+        <Loading loadingText={t('Loading ...')} />
+      </PreviewContainer>
+    )
+  }
+
   if (error) {
     // If error includes 403 which means the user has not completed initial setup, redirect to OAuth page
     if (error.status === 403) {
@@ -243,14 +253,6 @@ const FileListing: FC<{ query?: ParsedUrlQuery }> = ({ query }) => {
     return (
       <PreviewContainer>
         {error.status === 401 ? <Auth redirect={path} /> : <FourOhFour errorMsg={JSON.stringify(error.message)} />}
-      </PreviewContainer>
-    )
-  }
-
-  if (isFilesDataLoading || isFolderSettingsDataLoading || !data || isFilesDataValidating) {
-    return (
-      <PreviewContainer>
-        <Loading loadingText={t('Loading ...')} />
       </PreviewContainer>
     )
   }
@@ -276,7 +278,6 @@ const FileListing: FC<{ query?: ParsedUrlQuery }> = ({ query }) => {
     const removeSettingAndPasswordFromFolderChildren = (folderChildren: OdFolderObject['value']) => {
       return folderChildren.filter(c => c.name !== '.password' && c.name !== 'settings.json')
     }
-
 
     // File selection
     const genTotalSelected = (selected: { [key: string]: boolean }) => {
@@ -398,7 +399,6 @@ const FileListing: FC<{ query?: ParsedUrlQuery }> = ({ query }) => {
         })
     }
 
-  
     const updatedFolderChildren = removeSettingAndPasswordFromFolderChildren(folderChildren)
 
     // Folder layout component props
